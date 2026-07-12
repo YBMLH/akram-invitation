@@ -7,7 +7,7 @@ interface InvitationCardProps {
 
 const ease = [0.22, 1, 0.36, 1] as const
 
-/** The couture invitation card that rises through the opened petals. */
+/** بطاقة الدعوة التي ترتفع من بين البتلات المفتوحة */
 export function InvitationCard({ show }: InvitationCardProps) {
   const { brand, invitation } = siteContent
 
@@ -22,14 +22,12 @@ export function InvitationCard({ show }: InvitationCardProps) {
         transition={{ duration: 1.1, ease, delay: show ? 0.15 : 0 }}
       >
         <div className="relative border border-ink/15 bg-ivory/95 px-7 py-10 text-center shadow-[0_40px_90px_-35px_rgba(30,22,12,0.55)] backdrop-blur-sm sm:px-12 sm:py-12">
-          {/* inner hairline frame — the double mat of a couture invitation */}
+          {/* الإطار الداخلي الرفيع — بطاقة دعوة راقية بإطار مزدوج */}
           <div className="pointer-events-none absolute inset-2 border border-beige-deep/45" />
 
           <div className="relative">
-            <p className="font-body text-[0.6rem] uppercase tracking-luxe text-taupe">
-              {invitation.eyebrow}
-            </p>
-            <h3 className="mt-3 font-display text-2xl font-medium tracking-wide2 text-ink sm:text-[1.7rem]">
+            <p className="font-body text-sm font-light text-taupe">{invitation.eyebrow}</p>
+            <h3 className="mt-2 font-latin text-2xl font-medium tracking-wide2 text-ink sm:text-[1.7rem]">
               {brand.replace(/_/g, ' ')}
             </h3>
 
@@ -39,24 +37,26 @@ export function InvitationCard({ show }: InvitationCardProps) {
               <span className="h-px w-10 bg-beige-deep/60" />
             </div>
 
-            <p className="font-script text-4xl text-gold sm:text-[2.6rem]">Grand Opening</p>
+            <p className="font-ruqaa text-3xl leading-normal text-gold sm:text-4xl">
+              {invitation.script}
+            </p>
 
             <div className="mt-6 space-y-4">
               {invitation.paragraphs.map((p, i) => (
                 <p
                   key={i}
-                  className="font-body text-[0.92rem] font-light leading-relaxed text-ink/75 text-balance"
+                  className="font-body text-[0.95rem] font-light leading-relaxed text-ink/75 text-balance"
                 >
                   {p}
                 </p>
               ))}
             </div>
 
-            <p className="mt-7 font-display text-lg italic text-ink/80">
+            <p className="mt-7 font-display text-xl text-ink/80">
               {invitation.locationLabel}
             </p>
 
-            <p className="mt-4 font-body text-[0.8rem] font-light leading-relaxed text-taupe text-balance">
+            <p className="mt-4 font-body text-sm font-light leading-relaxed text-taupe text-balance">
               {invitation.closing}
             </p>
           </div>

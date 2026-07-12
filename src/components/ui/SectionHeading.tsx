@@ -11,13 +11,13 @@ export function SectionHeading({ eyebrow, title, className }: SectionHeadingProp
     <div className={`flex flex-col items-center text-center ${className ?? ''}`}>
       {eyebrow && (
         <Reveal>
-          <span className="mb-4 block font-body text-[0.66rem] uppercase tracking-luxe text-taupe">
+          <span className="mb-4 block font-body text-sm font-light text-taupe">
             {eyebrow}
           </span>
         </Reveal>
       )}
       <Reveal delay={0.05}>
-        <h2 className="font-display text-4xl font-light italic text-ink sm:text-5xl">
+        <h2 className="font-display text-4xl font-normal text-ink sm:text-5xl">
           {title}
         </h2>
       </Reveal>

@@ -15,10 +15,11 @@ export default {
         champagne: '#E9DABB',
       },
       fontFamily: {
-        display: ['"Cormorant Garamond"', 'serif'],
-        body: ['Jost', 'system-ui', 'sans-serif'],
-        script: ['"Great Vibes"', 'cursive'],
-        arabic: ['Amiri', 'serif'],
+        display: ['Amiri', '"Cormorant Garamond"', 'serif'],
+        body: ['Tajawal', 'Jost', 'system-ui', 'sans-serif'],
+        script: ['"Great Vibes"', '"Aref Ruqaa"', 'cursive'],
+        ruqaa: ['"Aref Ruqaa"', 'Amiri', 'serif'],
+        latin: ['"Cormorant Garamond"', 'serif'],
       },
       letterSpacing: {
         luxe: '0.35em',

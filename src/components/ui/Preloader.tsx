@@ -3,7 +3,7 @@ import { siteContent } from '../../config/content'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
-/** Monogram curtain shown while the experience prepares itself. */
+/** ستارة الشعار التي تظهر أثناء تحضير التجربة */
 export function Preloader() {
   return (
     <motion.div
@@ -26,12 +26,12 @@ export function Preloader() {
         transition={{ duration: 1.2, ease, delay: 0.4 }}
       />
       <motion.span
-        className="mt-6 font-body text-[0.6rem] uppercase tracking-luxe text-champagne/50"
+        className="mt-6 font-body text-sm font-light text-champagne/60"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.7 }}
       >
-        {siteContent.invitation.locationLabel}
+        {siteContent.location.label}
       </motion.span>
     </motion.div>
   )

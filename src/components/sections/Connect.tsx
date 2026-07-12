@@ -21,21 +21,23 @@ function WhatsappIcon({ className }: { className?: string }) {
 }
 
 export function Connect() {
-  const { social } = siteContent
+  const { social, ui } = siteContent
 
   const cards = [
     {
       icon: <InstagramIcon className="h-6 w-6" />,
-      kicker: 'Instagram',
+      kicker: ui.connect.instagram,
       title: social.instagram.handle,
-      action: 'Follow',
+      latin: true,
+      action: ui.connect.follow,
       href: social.instagram.url,
     },
     {
       icon: <WhatsappIcon className="h-6 w-6" />,
-      kicker: 'WhatsApp',
+      kicker: ui.connect.whatsapp,
       title: social.whatsapp.label,
-      action: 'Message',
+      latin: false,
+      action: ui.connect.message,
       href: social.whatsapp.url,
     },
   ]
@@ -43,7 +45,7 @@ export function Connect() {
   return (
     <section id="connect" className="px-6 py-24 sm:py-28">
       <div className="mx-auto max-w-4xl">
-        <SectionHeading eyebrow="Stay close" title="Connect With Us" />
+        <SectionHeading eyebrow={ui.connect.eyebrow} title={ui.connect.title} />
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2">
           {cards.map((c, i) => (
@@ -57,11 +59,14 @@ export function Connect() {
                 <span className="flex h-14 w-14 items-center justify-center rounded-full border border-beige-deep/50 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
                   {c.icon}
                 </span>
-                <p className="mt-6 font-body text-[0.6rem] uppercase tracking-luxe text-taupe">
-                  {c.kicker}
+                <p className="mt-6 font-body text-sm font-light text-taupe">{c.kicker}</p>
+                <p
+                  className={`mt-2 text-2xl text-ink ${c.latin ? 'font-latin' : 'font-display'}`}
+                  dir={c.latin ? 'ltr' : undefined}
+                >
+                  {c.title}
                 </p>
-                <p className="mt-2 font-display text-2xl italic text-ink">{c.title}</p>
-                <span className="mt-6 inline-block border border-ink/60 px-7 py-2.5 font-body text-[0.64rem] uppercase tracking-wide2 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
+                <span className="mt-6 inline-block border border-ink/60 px-7 py-2.5 font-body text-sm font-light text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
                   {c.action}
                 </span>
               </a>

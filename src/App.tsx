@@ -38,11 +38,11 @@ export default function App() {
 
       <footer className="border-t border-beige-deep/30 px-6 py-10 text-center">
         <p className="font-display text-[0.7rem] text-gold">✦</p>
-        <p className="mt-3 font-body text-[0.6rem] uppercase tracking-luxe text-taupe">
-          {siteContent.brand.replace(/_/g, ' ')} · {siteContent.location.label}
+        <p className="mt-3 font-latin text-[0.6rem] uppercase tracking-luxe text-taupe" dir="ltr">
+          {siteContent.brand.replace(/_/g, ' ')}
         </p>
-        <p className="mt-2 font-body text-[0.6rem] text-taupe/70">
-          Grand Opening — with love and elegance
+        <p className="mt-2 font-body text-xs font-light text-taupe/80">
+          {siteContent.ui.footerNote}
         </p>
       </footer>
     </div>

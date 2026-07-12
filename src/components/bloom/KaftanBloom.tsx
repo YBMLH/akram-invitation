@@ -15,7 +15,7 @@ const SWIRL_DEG = 12
 
 export function KaftanBloom() {
   const [phase, setPhase] = useState<Phase>('idle')
-  const { brand, subtitle, images, invitation } = siteContent
+  const { brand, subtitle, images, ui } = siteContent
 
   const bloomed = phase !== 'idle'
   const revealed = phase === 'revealed'
@@ -45,7 +45,7 @@ export function KaftanBloom() {
         aria-hidden
       />
 
-      {/* Vertical editorial rails (desktop only) */}
+      {/* Vertical editorial rails (desktop only, Latin brand marks) */}
       <AnimatePresence>
         {!bloomed && (
           <motion.div
@@ -57,10 +57,10 @@ export function KaftanBloom() {
             transition={{ duration: 1.2, ease }}
             aria-hidden
           >
-            <span className="absolute left-8 top-1/2 -translate-y-1/2 -rotate-90 whitespace-nowrap font-body text-[0.6rem] uppercase tracking-luxe text-champagne/40">
+            <span className="absolute left-8 top-1/2 -translate-y-1/2 -rotate-90 whitespace-nowrap font-latin text-[0.6rem] uppercase tracking-luxe text-champagne/40">
               Guelma · Algeria
             </span>
-            <span className="absolute right-8 top-1/2 -translate-y-1/2 rotate-90 whitespace-nowrap font-body text-[0.6rem] uppercase tracking-luxe text-champagne/40">
+            <span className="absolute right-8 top-1/2 -translate-y-1/2 rotate-90 whitespace-nowrap font-latin text-[0.6rem] uppercase tracking-luxe text-champagne/40">
               Caftan Couture
             </span>
           </motion.div>
@@ -72,13 +72,13 @@ export function KaftanBloom() {
         {!bloomed && (
           <motion.p
             key="eyebrow"
-            className="relative mb-8 text-center font-body text-[0.68rem] uppercase tracking-luxe text-champagne/70 sm:mb-10"
+            className="relative mb-8 text-center font-body text-base font-light text-champagne/80 sm:mb-10"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.9, ease }}
           >
-            You are cordially invited
+            {ui.invitedEyebrow}
           </motion.p>
         )}
       </AnimatePresence>
@@ -187,19 +187,19 @@ export function KaftanBloom() {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.9, ease, delay: 0.2 }}
           >
-            <h1 className="font-display text-5xl font-light italic tracking-wide text-ivory sm:text-6xl">
+            <h1 className="font-ruqaa text-5xl font-normal leading-snug text-ivory sm:text-6xl">
               {subtitle}
             </h1>
-            <p className="mt-4 font-body text-[0.7rem] uppercase tracking-luxe text-champagne/60">
-              {brand.replace(/_/g, ' ')} — {invitation.locationLabel}
+            <p className="mt-4 font-latin text-[0.7rem] uppercase tracking-luxe text-champagne/60">
+              {brand.replace(/_/g, ' ')}
             </p>
 
             <button
               type="button"
               onClick={open}
-              className="mt-10 border border-champagne/50 bg-transparent px-12 py-4 font-body text-[0.7rem] uppercase tracking-wide2 text-champagne transition-all duration-500 hover:border-champagne hover:bg-champagne hover:text-noir focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-noir"
+              className="mt-10 border border-champagne/50 bg-transparent px-12 py-4 font-body text-base font-light text-champagne transition-all duration-500 hover:border-champagne hover:bg-champagne hover:text-noir focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-noir"
             >
-              Open Invitation
+              {ui.openInvitation}
             </button>
           </motion.div>
         )}
@@ -216,7 +216,7 @@ export function KaftanBloom() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease, delay: 0.6 }}
           >
-            <span className="font-body text-[0.6rem] uppercase tracking-luxe">Scroll</span>
+            <span className="font-body text-xs font-light">{ui.scroll}</span>
             <motion.span
               className="block h-9 w-px bg-gradient-to-b from-beige-deep to-transparent"
               animate={{ scaleY: [0.4, 1, 0.4], opacity: [0.4, 1, 0.4] }}

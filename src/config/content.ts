@@ -1,16 +1,14 @@
 /**
  * ─────────────────────────────────────────────────────────────
- *  STYLE_BY_IB — Invitation content
+ *  STYLE_BY_IB — محتوى الدعوة
  * ─────────────────────────────────────────────────────────────
- *  Everything the client may want to change lives in this file.
- *  Edit the values below — no other file needs to be touched.
+ *  كل النصوص والروابط القابلة للتعديل موجودة في هذا الملف فقط.
  *
- *  • Countdown date .......... siteContent.event.dateISO
- *  • Social links ............ siteContent.social
- *  • Map / location .......... siteContent.location
- *  • Gallery photos .......... siteContent.gallery  (drop files in
- *                              /public/assets/gallery and list them)
- *  • Hero images ............. siteContent.images
+ *  • تاريخ العد التنازلي ...... siteContent.event.dateISO
+ *  • روابط التواصل ............ siteContent.social
+ *  • الخريطة / الموقع ......... siteContent.location
+ *  • صور المعرض ............... siteContent.gallery
+ *  • صور الواجهة .............. siteContent.images
  * ─────────────────────────────────────────────────────────────
  */
 
@@ -18,30 +16,28 @@
  * Base URL for image assets.
  *  • ''                         → served from this site (public/assets/…)
  *  • 'https://cdn.example/pub'  → host assets on an external CDN / origin
- * The build injects VITE_ASSET_BASE if provided, otherwise same-origin.
  */
 const ASSET_BASE = import.meta.env.VITE_ASSET_BASE ?? ''
 const asset = (path: string) => `${ASSET_BASE}${path}`
 
 export interface SiteContent {
   brand: string
+  /** العنوان الرئيسي بالخط الرقعي */
   subtitle: string
   event: {
-    /** ISO date/time of the grand opening — powers the countdown. */
+    /** تاريخ ووقت الافتتاح — يشغّل العد التنازلي */
     dateISO: string
   }
   invitation: {
     eyebrow: string
-    title: string
+    script: string
     paragraphs: string[]
     locationLabel: string
     closing: string
   }
   location: {
     label: string
-    /** Google Maps embed URL (no API key required). */
     mapEmbedSrc: string
-    /** "Open in Google Maps" destination. */
     mapsLink: string
   }
   social: {
@@ -50,42 +46,65 @@ export interface SiteContent {
   }
   welcome: {
     title: string
-    /** Short Arabic greeting shown above the thank-you message. */
     arabic: string
     paragraphs: string[]
   }
   gallery: { src: string; caption: string }[]
   images: {
-    /** Transparent kaftan ring — the hero centerpiece. */
     kaftanCircle: string
-    /** Boutique logo shown in the centre of the ring. */
     logo: string
+  }
+  /** نصوص الواجهة (أزرار، عناوين، شريط متحرك…) */
+  ui: {
+    invitedEyebrow: string
+    openInvitation: string
+    scroll: string
+    marquee: string[]
+    countdown: {
+      eyebrow: string
+      title: string
+      doorsOpen: string
+      days: string
+      hours: string
+      minutes: string
+      seconds: string
+    }
+    location: { eyebrow: string; title: string; kicker: string; openMaps: string }
+    connect: {
+      eyebrow: string
+      title: string
+      instagram: string
+      whatsapp: string
+      follow: string
+      message: string
+    }
+    gallery: { eyebrow: string; title: string }
+    footerNote: string
   }
 }
 
 export const siteContent: SiteContent = {
   brand: 'STYLE_BY_IB',
-  subtitle: 'Grand Opening',
+  subtitle: 'الافتتاح الكبير',
 
   event: {
-    // ── Change this to your opening date & time ──
-    dateISO: '2026-09-05T18:00:00',
+    // ── الخميس ١٦ جويلية ٢٠٢٦ — التاسعة صباحاً ──
+    dateISO: '2026-07-16T09:00:00',
   },
 
   invitation: {
-    eyebrow: 'The house of',
-    title: 'Grand Opening',
+    eyebrow: 'من دار',
+    script: 'الافتتاح الكبير',
     paragraphs: [
-      'You are cordially invited to celebrate the grand opening of Style_By_IB.',
-      'Discover our exclusive collection of elegant kaftans and celebrate this special occasion with us.',
+      'يشرّفنا دعوتكم لحضور حفل الافتتاح الكبير لدار Style By IB.',
+      'اكتشفوا مجموعتنا الحصرية من القفاطين الأنيقة وشاركونا هذه المناسبة المميزة.',
     ],
-    locationLabel: 'Guelma, Algeria',
-    closing:
-      'We look forward to welcoming you and sharing this memorable moment together.',
+    locationLabel: 'قالمة، الجزائر',
+    closing: 'نتطلع لاستقبالكم ومشاركتكم هذه اللحظة التي لا تُنسى.',
   },
 
   location: {
-    label: 'Guelma, Algeria',
+    label: 'قالمة، الجزائر',
     mapEmbedSrc: 'https://www.google.com/maps?q=Guelma,Algeria&z=13&output=embed',
     mapsLink: 'https://www.google.com/maps/search/?api=1&query=Guelma%2C+Algeria',
   },
@@ -96,32 +115,67 @@ export const siteContent: SiteContent = {
       url: 'https://instagram.com/style_by_ib',
     },
     whatsapp: {
-      // ── Replace with the boutique's WhatsApp number (intl. format, no +) ──
-      label: 'Chat with us',
+      // ── ضعوا رقم واتساب البوتيك بالصيغة الدولية بدون + ──
+      label: 'تحدثوا معنا',
       url: 'https://wa.me/213000000000',
     },
   },
 
   welcome: {
-    title: 'With gratitude',
+    title: 'بكل امتنان',
     arabic: 'أهلاً وسهلاً بكم',
     paragraphs: [
-      'Thank you for being part of the Style_By_IB story.',
-      'It would be our honour to welcome you to the opening and to share the elegance of our craft with you.',
+      'شكراً لكونكم جزءاً من قصة Style By IB.',
+      'سيكون شرفاً لنا أن نرحّب بكم في الافتتاح وأن نشارككم أناقة صنعتنا.',
     ],
   },
 
   gallery: [
-    { src: asset('/assets/gallery/kaftan-1.webp'), caption: 'The Ivory Edit' },
-    { src: asset('/assets/gallery/kaftan-2.webp'), caption: 'Golden Thread' },
-    { src: asset('/assets/gallery/kaftan-3.webp'), caption: 'Azure Couture' },
-    { src: asset('/assets/gallery/kaftan-4.webp'), caption: 'Maison Noir' },
-    { src: asset('/assets/gallery/kaftan-5.webp'), caption: 'Rose Atelier' },
-    { src: asset('/assets/gallery/kaftan-6.webp'), caption: 'Emerald Reverie' },
+    { src: asset('/assets/gallery/kaftan-1.webp'), caption: 'طقم العاج' },
+    { src: asset('/assets/gallery/kaftan-2.webp'), caption: 'الخيط الذهبي' },
+    { src: asset('/assets/gallery/kaftan-3.webp'), caption: 'الأزرق الملكي' },
+    { src: asset('/assets/gallery/kaftan-4.webp'), caption: 'أسود الدار' },
+    { src: asset('/assets/gallery/kaftan-5.webp'), caption: 'وردة الأتيلييه' },
+    { src: asset('/assets/gallery/kaftan-6.webp'), caption: 'حلم الزمرد' },
   ],
 
   images: {
     kaftanCircle: asset('/assets/kaftan-circle.webp'),
     logo: asset('/assets/logo.webp'),
+  },
+
+  ui: {
+    invitedEyebrow: 'أنتم مدعوون بكل حب',
+    openInvitation: 'افتحوا الدعوة',
+    scroll: 'مرّروا للأسفل',
+    marquee: ['الافتتاح الكبير', 'Style by IB', 'قالمة · الجزائر', 'قفطان وأناقة'],
+    countdown: {
+      eyebrow: 'نعدّ اللحظات',
+      title: 'موعد الافتتاح',
+      doorsOpen: 'الأبواب مفتوحة — أهلاً بكم',
+      days: 'أيام',
+      hours: 'ساعات',
+      minutes: 'دقائق',
+      seconds: 'ثوانٍ',
+    },
+    location: {
+      eyebrow: 'أين تجدوننا',
+      title: 'الموقع',
+      kicker: 'البوتيك',
+      openMaps: 'افتحوا في خرائط جوجل',
+    },
+    connect: {
+      eyebrow: 'ابقوا قريبين',
+      title: 'تواصلوا معنا',
+      instagram: 'إنستغرام',
+      whatsapp: 'واتساب',
+      follow: 'تابعونا',
+      message: 'راسلونا',
+    },
+    gallery: {
+      eyebrow: 'المجموعة',
+      title: 'قفاطين الدار',
+    },
+    footerNote: 'الافتتاح الكبير — بكل حب وأناقة',
   },
 }

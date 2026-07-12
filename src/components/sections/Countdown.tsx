@@ -9,27 +9,26 @@ function pad(n: number) {
 }
 
 export function Countdown() {
+  const { ui } = siteContent
   const { days, hours, minutes, seconds, isComplete } = useCountdown(
     siteContent.event.dateISO,
   )
 
   const units = [
-    { label: 'Days', value: pad(days) },
-    { label: 'Hours', value: pad(hours) },
-    { label: 'Minutes', value: pad(minutes) },
-    { label: 'Seconds', value: pad(seconds) },
+    { label: ui.countdown.days, value: pad(days) },
+    { label: ui.countdown.hours, value: pad(hours) },
+    { label: ui.countdown.minutes, value: pad(minutes) },
+    { label: ui.countdown.seconds, value: pad(seconds) },
   ]
 
   return (
     <section id="countdown" className="px-6 py-24 sm:py-28">
       <div className="mx-auto max-w-3xl">
-        <SectionHeading eyebrow="Counting the moments" title="The Unveiling" />
+        <SectionHeading eyebrow={ui.countdown.eyebrow} title={ui.countdown.title} />
 
         {isComplete ? (
           <Reveal className="mt-12 text-center">
-            <p className="font-display text-3xl italic text-ink">
-              The doors are open — welcome.
-            </p>
+            <p className="font-display text-3xl text-ink">{ui.countdown.doorsOpen}</p>
           </Reveal>
         ) : (
           <Reveal className="mt-14">
@@ -40,10 +39,10 @@ export function Countdown() {
                     <span className="block h-12 w-px bg-beige-deep/40 sm:h-16" aria-hidden />
                   )}
                   <div className="flex min-w-[3.2rem] flex-col items-center sm:min-w-[5rem]">
-                    <span className="font-display text-5xl font-light tabular-nums text-ink sm:text-7xl">
+                    <span className="font-latin text-5xl font-light tabular-nums text-ink sm:text-7xl">
                       {u.value}
                     </span>
-                    <span className="mt-3 font-body text-[0.56rem] uppercase tracking-wide2 text-taupe sm:text-[0.66rem]">
+                    <span className="mt-3 font-body text-xs font-light text-taupe sm:text-sm">
                       {u.label}
                     </span>
                   </div>

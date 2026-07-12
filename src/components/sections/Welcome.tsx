@@ -6,7 +6,7 @@ export function Welcome() {
 
   return (
     <section id="welcome" className="relative overflow-hidden px-6 py-28 sm:py-32">
-      {/* faint centerpiece echo */}
+      {/* صدى خافت للحلقة المركزية */}
       <img
         src={siteContent.images.kaftanCircle}
         alt=""
@@ -16,13 +16,13 @@ export function Welcome() {
 
       <div className="relative mx-auto max-w-2xl text-center">
         <Reveal>
-          <p className="font-arabic text-3xl leading-relaxed text-gold sm:text-4xl" dir="rtl" lang="ar">
+          <p className="font-ruqaa text-4xl leading-relaxed text-gold sm:text-5xl">
             {welcome.arabic}
           </p>
         </Reveal>
 
         <Reveal delay={0.05}>
-          <span className="mt-6 block font-body text-[0.66rem] uppercase tracking-luxe text-taupe">
+          <span className="mt-6 block font-body text-sm font-light text-taupe">
             {welcome.title}
           </span>
         </Reveal>
@@ -45,15 +45,18 @@ export function Welcome() {
           ))}
         </div>
 
-        {/* signature */}
+        {/* التوقيع */}
         <Reveal delay={0.28}>
-          <p className="mt-14 font-script text-5xl text-ink sm:text-6xl">Style by ib</p>
-          <p className="mt-4 font-display text-lg italic text-taupe">{location.label}</p>
+          <p className="mt-14 font-script text-5xl text-ink sm:text-6xl" dir="ltr">
+            Style by ib
+          </p>
+          <p className="mt-4 font-display text-xl text-taupe">{location.label}</p>
           <a
             href={social.instagram.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-5 inline-block font-body text-[0.7rem] uppercase tracking-wide2 text-taupe transition-colors hover:text-ink"
+            className="mt-5 inline-block font-latin text-[0.7rem] uppercase tracking-wide2 text-taupe transition-colors hover:text-ink"
+            dir="ltr"
           >
             {social.instagram.handle}
           </a>

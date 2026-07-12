@@ -5,12 +5,12 @@ import { SectionHeading } from '../ui/SectionHeading'
 const ease = [0.22, 1, 0.36, 1] as const
 
 export function Gallery() {
-  const { gallery } = siteContent
+  const { gallery, ui } = siteContent
 
   return (
     <section id="gallery" className="bg-ivory/60 px-6 py-24 sm:py-28">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow="The collection" title="Maison Kaftan" />
+        <SectionHeading eyebrow={ui.gallery.eyebrow} title={ui.gallery.title} />
 
         <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-3">
           {gallery.map((item, i) => (
@@ -33,12 +33,12 @@ export function Gallery() {
                 </div>
               </div>
 
-              {/* editorial caption line */}
+              {/* سطر التسمية بأسلوب المجلات */}
               <figcaption className="mt-3 flex items-baseline justify-between border-b border-beige-deep/30 pb-2">
-                <span className="font-display text-sm italic text-taupe">
+                <span className="font-latin text-sm italic text-taupe">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <span className="font-body text-[0.62rem] uppercase tracking-wide2 text-ink/70">
+                <span className="font-body text-sm font-light text-ink/70">
                   {item.caption}
                 </span>
               </figcaption>

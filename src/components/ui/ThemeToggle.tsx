@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useTheme } from '../../hooks/useTheme'
+import { useThemeCtx } from '../../context/theme'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -22,7 +22,7 @@ function MoonIcon() {
 
 /** Floating light/dark switch — the maison by day or by night. */
 export function ThemeToggle() {
-  const { theme, toggle } = useTheme()
+  const { theme, toggle } = useThemeCtx()
 
   return (
     <motion.button

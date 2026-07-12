@@ -5,6 +5,8 @@ import { siteContent } from '../../config/content'
 import { PETALS } from './petals'
 import { Particles } from './Particles'
 import { InvitationCard } from './InvitationCard'
+import { StarBurst } from './StarBurst'
+import { useThemeCtx } from '../../context/theme'
 
 type Phase = 'idle' | 'blooming' | 'revealed'
 
@@ -17,6 +19,7 @@ const SWIRL_DEG = 12
 export function KaftanBloom() {
   const [phase, setPhase] = useState<Phase>('idle')
   const { brand, subtitle, images, ui } = siteContent
+  const { setTheme } = useThemeCtx()
 
   const bloomed = phase !== 'idle'
   const revealed = phase === 'revealed'
@@ -40,6 +43,8 @@ export function KaftanBloom() {
 
   function open() {
     if (phase !== 'idle') return
+    // The unveiling always blooms into daylight.
+    setTheme('light')
     setPhase('blooming')
     // Let the petals finish opening, then float the card in.
     window.setTimeout(() => setPhase('revealed'), 1500)
@@ -197,20 +202,44 @@ export function KaftanBloom() {
           />
         )}
 
-        {/* Logo medallion in the empty centre (wrapper centers; motion animates inside) */}
+        {/* The logo medallion IS the button — tap it to open the invitation */}
         <div
-          className="pointer-events-none absolute left-1/2 top-1/2 z-20"
+          className={`absolute left-1/2 top-1/2 z-20 ${bloomed ? 'pointer-events-none' : ''}`}
           style={{ width: '35%', transform: 'translate(-50%, -50%)' }}
         >
-          <motion.img
-            src={images.logo}
-            alt={`${brand} logo`}
-            className="block w-full select-none drop-shadow-[0_0_30px_rgba(233,218,187,0.35)]"
-            draggable={false}
+          <motion.button
+            type="button"
+            onClick={open}
+            disabled={bloomed}
+            aria-label={ui.openInvitation}
+            className="relative block w-full rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-transparent"
             initial={false}
             animate={{ opacity: bloomed ? 0 : 1, scale: bloomed ? 0.55 : 1 }}
+            whileHover={bloomed ? undefined : { scale: 1.06 }}
+            whileTap={bloomed ? undefined : { scale: 0.93 }}
             transition={{ duration: 0.6, ease }}
-          />
+          >
+            {/* inviting pulse ring */}
+            {!bloomed && (
+              <motion.span
+                className="absolute -inset-3 rounded-full border border-champagne/50"
+                animate={{ scale: [1, 1.18], opacity: [0.7, 0] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
+                aria-hidden
+              />
+            )}
+            {/* grounding shadow underneath the button */}
+            <span
+              className="absolute -bottom-5 left-1/2 h-5 w-3/4 -translate-x-1/2 rounded-[50%] bg-black/45 blur-md"
+              aria-hidden
+            />
+            <img
+              src={images.logo}
+              alt={`${brand} logo`}
+              className="relative block w-full select-none rounded-full shadow-[0_28px_55px_-18px_rgba(0,0,0,0.7)] drop-shadow-[0_0_30px_rgba(233,218,187,0.35)]"
+              draggable={false}
+            />
+          </motion.button>
         </div>
 
         {/* Ambient light motes */}
@@ -218,6 +247,9 @@ export function KaftanBloom() {
 
         {/* The invitation card rises through the opened petals */}
         <InvitationCard show={revealed} />
+
+        {/* Stars erupt from the logo as the card appears */}
+        <StarBurst fire={revealed} />
       </motion.div>
 
       {/* ── Idle controls: subtitle + open button ── */}
@@ -238,15 +270,13 @@ export function KaftanBloom() {
               {brand.replace(/_/g, ' ')}
             </p>
 
-            <motion.button
-              type="button"
-              onClick={open}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="mt-10 border border-champagne/50 bg-transparent px-12 py-4 font-body text-base font-light text-champagne transition-colors duration-500 hover:border-champagne hover:bg-champagne hover:text-noir focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-noir"
+            <motion.p
+              className="mt-8 font-body text-sm font-light text-champagne/70"
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
             >
-              {ui.openInvitation}
-            </motion.button>
+              ✦ {ui.openInvitation} ✦
+            </motion.p>
           </motion.div>
         )}
       </AnimatePresence>

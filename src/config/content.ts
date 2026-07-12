@@ -88,8 +88,8 @@ export const siteContent: SiteContent = {
   subtitle: 'الافتتاح الكبير',
 
   event: {
-    // ── الخميس ١٦ جويلية ٢٠٢٦ — التاسعة صباحاً ──
-    dateISO: '2026-07-16T09:00:00',
+    // ── السبت ١٨ جويلية ٢٠٢٦ — التاسعة صباحاً ──
+    dateISO: '2026-07-18T09:00:00',
   },
 
   invitation: {
@@ -117,7 +117,7 @@ export const siteContent: SiteContent = {
     whatsapp: {
       // ── ضعوا رقم واتساب البوتيك بالصيغة الدولية بدون + ──
       label: 'تحدثوا معنا',
-      url: 'https://wa.me/213000000000',
+      url: 'https://wa.me/213676779040',
     },
   },
 
@@ -146,7 +146,7 @@ export const siteContent: SiteContent = {
 
   ui: {
     invitedEyebrow: 'أنتم مدعوون بكل حب',
-    openInvitation: 'افتحوا الدعوة',
+    openInvitation: 'اضغطوا على الشعار لفتح الدعوة',
     scroll: 'مرّروا للأسفل',
     marquee: ['الافتتاح الكبير', 'Style by IB', 'قالمة · الجزائر', 'قفطان وأناقة'],
     countdown: {
@@ -173,8 +173,8 @@ export const siteContent: SiteContent = {
       message: 'راسلونا',
     },
     gallery: {
-      eyebrow: 'المجموعة',
-      title: 'قفاطين الدار',
+      eyebrow: '',
+      title: 'Gallery',
     },
     footerNote: 'الافتتاح الكبير — بكل حب وأناقة',
   },

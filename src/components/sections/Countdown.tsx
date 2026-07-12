@@ -9,6 +9,78 @@ function pad(n: number) {
   return n.toString().padStart(2, '0')
 }
 
+/**
+ * ساعة رملية متحركة: الرمل ينساب من الأعلى إلى الأسفل ثم تنقلب —
+ * حالتا البداية والنهاية متطابقتان بصرياً فيبدو التكرار سلساً.
+ */
+function Hourglass() {
+  const CYCLE = 6
+  const times = [0, 0.72, 0.88, 1]
+
+  return (
+    <motion.svg
+      viewBox="0 0 100 140"
+      className="mx-auto h-28 w-auto text-ink transition-colors duration-500 dark:text-champagne sm:h-32"
+      animate={{ rotate: [0, 0, 180, 180] }}
+      transition={{ duration: CYCLE, times, repeat: Infinity, ease: 'easeInOut' }}
+      aria-hidden
+    >
+      {/* الإطار الخشبي */}
+      <rect x="14" y="4" width="72" height="7" rx="3.5" fill="currentColor" />
+      <rect x="14" y="129" width="72" height="7" rx="3.5" fill="currentColor" />
+      <line x1="20" y1="11" x2="20" y2="129" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <line x1="80" y1="11" x2="80" y2="129" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+
+      {/* الزجاج */}
+      <path
+        d="M27 14 H73 V30 C73 44 56 54 52 63 V70 H48 V63 C44 54 27 44 27 30 Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+        opacity="0.55"
+      />
+      <path
+        d="M27 126 H73 V110 C73 96 56 86 52 77 V70 H48 V77 C44 86 27 96 27 110 Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+        opacity="0.55"
+      />
+
+      {/* الرمل العلوي — يتقلّص نحو العنق */}
+      <motion.path
+        d="M31 22 H69 V30 C69 42 54 52 50 62 C46 52 31 42 31 30 Z"
+        fill="#C2A87E"
+        style={{ transformBox: 'fill-box', transformOrigin: 'center bottom' }}
+        animate={{ scaleY: [1, 0.02, 0.02, 0.02] }}
+        transition={{ duration: CYCLE, times, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      {/* خيط الرمل المنساب */}
+      <motion.rect
+        x="48.8"
+        y="70"
+        width="2.4"
+        height="52"
+        fill="#C2A87E"
+        animate={{ opacity: [1, 1, 0, 0] }}
+        transition={{ duration: CYCLE, times: [0, 0.68, 0.74, 1], repeat: Infinity }}
+      />
+
+      {/* الرمل السفلي — يتراكم من القاعدة */}
+      <motion.path
+        d="M31 122 H69 V116 C69 106 56 98 50 92 C44 98 31 106 31 116 Z"
+        fill="#C2A87E"
+        style={{ transformBox: 'fill-box', transformOrigin: 'center bottom' }}
+        animate={{ scaleY: [0.04, 1, 1, 1] }}
+        transition={{ duration: CYCLE, times, repeat: Infinity, ease: 'easeInOut' }}
+      />
+    </motion.svg>
+  )
+}
+
 /** رقم يتدحرج بسلاسة عند تغيّر قيمته */
 function RollingValue({ value }: { value: string }) {
   return (
@@ -54,8 +126,9 @@ export function Countdown() {
             </p>
           </Reveal>
         ) : (
-          <Reveal className="mt-14">
-            <div className="flex items-center justify-center gap-4 sm:gap-9">
+          <Reveal className="mt-12">
+            <Hourglass />
+            <div className="mt-10 flex items-center justify-center gap-4 sm:gap-9">
               {units.map((u, i) => (
                 <Fragment key={u.label}>
                   {i > 0 && (

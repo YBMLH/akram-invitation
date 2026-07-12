@@ -34,7 +34,7 @@ export function Gallery() {
       className="bg-ivory/60 px-6 py-24 transition-colors duration-500 dark:bg-[#1B1510]/60 sm:py-28"
     >
       <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow={ui.gallery.eyebrow} title={ui.gallery.title} />
+        <SectionHeading eyebrow={ui.gallery.eyebrow || undefined} title={ui.gallery.title} />
 
         <div className="mt-14 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-3">
           {gallery.map((item, i) => (
@@ -59,15 +59,6 @@ export function Gallery() {
                 </div>
               </div>
 
-              {/* سطر التسمية بأسلوب المجلات */}
-              <figcaption className="mt-3 flex items-baseline justify-between border-b border-beige-deep/30 pb-2 transition-colors duration-500 dark:border-gold/25">
-                <span className="font-latin text-sm italic text-taupe dark:text-champagne/50">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="font-body text-sm font-light text-ink/70 dark:text-champagne/80">
-                  {item.caption}
-                </span>
-              </figcaption>
             </motion.figure>
           ))}
         </div>
@@ -140,12 +131,9 @@ export function Gallery() {
                   />
                 </AnimatePresence>
               </div>
-              <figcaption className="mt-5 flex items-baseline gap-4 text-center">
-                <span className="font-latin text-sm italic text-champagne/50">
+              <figcaption className="mt-5 text-center">
+                <span className="font-latin text-base italic text-champagne/60">
                   {String(active + 1).padStart(2, '0')} / {String(gallery.length).padStart(2, '0')}
-                </span>
-                <span className="font-display text-2xl text-champagne">
-                  {gallery[active].caption}
                 </span>
               </figcaption>
             </motion.figure>

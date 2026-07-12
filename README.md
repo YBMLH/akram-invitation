@@ -62,11 +62,15 @@ All imagery lives in **`public/assets/`** and is referenced from
 `src/config/content.ts`. Drop in a new file with the same name, or point the
 config at your new filename.
 
-| Asset               | File                                 |
-| ------------------- | ------------------------------------ |
-| Kaftan ring (hero)  | `public/assets/kaftan-circle.png`    |
-| Boutique logo       | `public/assets/logo.png`             |
-| Gallery photographs | `public/assets/gallery/kaftan-*.jpg` |
+| Asset               | File                                  |
+| ------------------- | ------------------------------------- |
+| Kaftan ring (hero)  | `public/assets/kaftan-circle.webp`    |
+| Boutique logo       | `public/assets/logo.webp`             |
+| Gallery photographs | `public/assets/gallery/kaftan-*.webp` |
+
+> Assets are served same-origin from `public/assets` by default. To host them
+> on an external origin/CDN instead, set `VITE_ASSET_BASE` at build time (see
+> `src/config/content.ts`).
 
 **Tips for the hero ring:** use a square PNG with a **transparent background**
 and a transparent hole in the centre (the logo sits in that hole). The current

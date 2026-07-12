@@ -14,6 +14,15 @@
  * ─────────────────────────────────────────────────────────────
  */
 
+/**
+ * Base URL for image assets.
+ *  • ''                         → served from this site (public/assets/…)
+ *  • 'https://cdn.example/pub'  → host assets on an external CDN / origin
+ * The build injects VITE_ASSET_BASE if provided, otherwise same-origin.
+ */
+const ASSET_BASE = import.meta.env.VITE_ASSET_BASE ?? ''
+const asset = (path: string) => `${ASSET_BASE}${path}`
+
 export interface SiteContent {
   brand: string
   subtitle: string
@@ -100,16 +109,16 @@ export const siteContent: SiteContent = {
   },
 
   gallery: [
-    { src: '/assets/gallery/kaftan-1.jpg', caption: 'The Ivory Edit' },
-    { src: '/assets/gallery/kaftan-2.jpg', caption: 'Golden Thread' },
-    { src: '/assets/gallery/kaftan-3.jpg', caption: 'Azure Couture' },
-    { src: '/assets/gallery/kaftan-4.jpg', caption: 'Maison Noir' },
-    { src: '/assets/gallery/kaftan-5.jpg', caption: 'Rose Atelier' },
-    { src: '/assets/gallery/kaftan-6.jpg', caption: 'Emerald Reverie' },
+    { src: asset('/assets/gallery/kaftan-1.webp'), caption: 'The Ivory Edit' },
+    { src: asset('/assets/gallery/kaftan-2.webp'), caption: 'Golden Thread' },
+    { src: asset('/assets/gallery/kaftan-3.webp'), caption: 'Azure Couture' },
+    { src: asset('/assets/gallery/kaftan-4.webp'), caption: 'Maison Noir' },
+    { src: asset('/assets/gallery/kaftan-5.webp'), caption: 'Rose Atelier' },
+    { src: asset('/assets/gallery/kaftan-6.webp'), caption: 'Emerald Reverie' },
   ],
 
   images: {
-    kaftanCircle: '/assets/kaftan-circle.png',
-    logo: '/assets/logo.png',
+    kaftanCircle: asset('/assets/kaftan-circle.webp'),
+    logo: asset('/assets/logo.webp'),
   },
 }

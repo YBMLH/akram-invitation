@@ -131,12 +131,12 @@ export const siteContent: SiteContent = {
   },
 
   gallery: [
-    { src: asset('/assets/gallery/kaftan-1.webp'), caption: 'طقم العاج' },
-    { src: asset('/assets/gallery/kaftan-2.webp'), caption: 'الخيط الذهبي' },
-    { src: asset('/assets/gallery/kaftan-3.webp'), caption: 'الأزرق الملكي' },
-    { src: asset('/assets/gallery/kaftan-4.webp'), caption: 'أسود الدار' },
-    { src: asset('/assets/gallery/kaftan-5.webp'), caption: 'وردة الأتيلييه' },
-    { src: asset('/assets/gallery/kaftan-6.webp'), caption: 'حلم الزمرد' },
+    { src: asset('/assets/gallery/design-1.webp'), caption: 'قفطان العروس' },
+    { src: asset('/assets/gallery/design-4.webp'), caption: 'عروس الدانتيل' },
+    { src: asset('/assets/gallery/design-2.webp'), caption: 'الكاراكو الذهبي' },
+    { src: asset('/assets/gallery/design-5.webp'), caption: 'سهرة العنّابي' },
+    { src: asset('/assets/gallery/design-6.webp'), caption: 'كاراكو الليل' },
+    { src: asset('/assets/gallery/design-3.webp'), caption: 'سهرة الزمرد' },
   ],
 
   images: {

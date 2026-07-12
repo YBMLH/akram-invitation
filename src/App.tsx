@@ -1,6 +1,8 @@
 import { AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Preloader } from './components/ui/Preloader'
+import { ThemeToggle } from './components/ui/ThemeToggle'
+import { ScrollProgress } from './components/ui/ScrollProgress'
 import { Marquee } from './components/ui/Marquee'
 import { KaftanBloom } from './components/bloom/KaftanBloom'
 import { Countdown } from './components/sections/Countdown'
@@ -19,8 +21,11 @@ export default function App() {
   }, [])
 
   return (
-    <div className="bg-ambient min-h-screen font-body text-ink">
+    <div className="bg-ambient min-h-screen font-body text-ink transition-colors duration-500 dark:text-[#EDE3CF]">
       <AnimatePresence>{loading && <Preloader />}</AnimatePresence>
+
+      <ScrollProgress />
+      <ThemeToggle />
 
       <main>
         {/* Signature hero: night atelier — the kaftan ring blooms into daylight */}
@@ -36,12 +41,12 @@ export default function App() {
         <Welcome />
       </main>
 
-      <footer className="border-t border-beige-deep/30 px-6 py-10 text-center">
+      <footer className="border-t border-beige-deep/30 px-6 py-10 text-center transition-colors duration-500 dark:border-gold/25">
         <p className="font-display text-[0.7rem] text-gold">✦</p>
-        <p className="mt-3 font-latin text-[0.6rem] uppercase tracking-luxe text-taupe" dir="ltr">
+        <p className="mt-3 font-latin text-[0.6rem] uppercase tracking-luxe text-taupe dark:text-champagne/50" dir="ltr">
           {siteContent.brand.replace(/_/g, ' ')}
         </p>
-        <p className="mt-2 font-body text-xs font-light text-taupe/80">
+        <p className="mt-2 font-body text-xs font-light text-taupe/80 dark:text-champagne/40">
           {siteContent.ui.footerNote}
         </p>
       </footer>

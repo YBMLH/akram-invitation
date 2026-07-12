@@ -54,19 +54,19 @@ export function Connect() {
                 href={c.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex h-full flex-col items-center border border-beige-deep/35 bg-ivory/70 px-8 py-11 text-center transition-all duration-500 hover:-translate-y-1 hover:border-ink/50 hover:shadow-[0_30px_70px_-45px_rgba(30,22,12,0.8)]"
+                className="group flex h-full flex-col items-center border border-beige-deep/35 bg-ivory/70 px-8 py-11 text-center transition-all duration-500 hover:-translate-y-1 hover:border-ink/50 dark:border-gold/25 dark:bg-[#1E1812]/70 dark:hover:border-champagne/60 hover:shadow-[0_30px_70px_-45px_rgba(30,22,12,0.8)]"
               >
-                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-beige-deep/50 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-beige-deep/50 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory dark:border-gold/40 dark:text-champagne dark:group-hover:bg-champagne dark:group-hover:text-noir">
                   {c.icon}
                 </span>
-                <p className="mt-6 font-body text-sm font-light text-taupe">{c.kicker}</p>
+                <p className="mt-6 font-body text-sm font-light text-taupe dark:text-champagne/50">{c.kicker}</p>
                 <p
-                  className={`mt-2 text-2xl text-ink ${c.latin ? 'font-latin' : 'font-display'}`}
+                  className={`mt-2 text-2xl text-ink dark:text-champagne ${c.latin ? 'font-latin' : 'font-display'}`}
                   dir={c.latin ? 'ltr' : undefined}
                 >
                   {c.title}
                 </p>
-                <span className="mt-6 inline-block border border-ink/60 px-7 py-2.5 font-body text-sm font-light text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
+                <span className="mt-6 inline-block border border-ink/60 px-7 py-2.5 font-body text-sm font-light text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory dark:border-champagne/60 dark:text-champagne dark:group-hover:bg-champagne dark:group-hover:text-noir">
                   {c.action}
                 </span>
               </a>

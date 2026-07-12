@@ -20,12 +20,30 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  transition: background-color 0.6s ease, color 0.6s ease;
 }
 
 /* Subtle luxury paper gradient for the light sections */
 .bg-ambient {
   background:
     radial-gradient(120% 80% at 50% 12%, #fffdf8 0%, #f8f4ec 42%, #efe7d7 100%);
+}
+
+/* ── Dark theme: the whole maison at night ── */
+.dark {
+  color-scheme: dark;
+}
+.dark body {
+  background-color: #171310;
+  color: #ede3cf;
+}
+.dark .bg-ambient {
+  background:
+    radial-gradient(120% 80% at 50% 12%, #221b14 0%, #171310 48%, #0f0c09 100%);
+}
+.dark ::selection {
+  background: #c2a87e;
+  color: #171310;
 }
 
 /* Cinematic film grain laid over the whole experience */

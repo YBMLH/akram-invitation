@@ -1,5 +1,6 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion'
 import { useState } from 'react'
+import type { PointerEvent } from 'react'
 import { siteContent } from '../../config/content'
 import { PETALS } from './petals'
 import { Particles } from './Particles'
@@ -19,6 +20,23 @@ export function KaftanBloom() {
 
   const bloomed = phase !== 'idle'
   const revealed = phase === 'revealed'
+
+  // Interactive 3D tilt: the ring leans gently toward the pointer.
+  const tiltX = useMotionValue(0)
+  const tiltY = useMotionValue(0)
+  const rotateX = useSpring(tiltX, { stiffness: 60, damping: 14 })
+  const rotateY = useSpring(tiltY, { stiffness: 60, damping: 14 })
+
+  function handleTilt(e: PointerEvent<HTMLDivElement>) {
+    const r = e.currentTarget.getBoundingClientRect()
+    tiltY.set(((e.clientX - r.left) / r.width - 0.5) * 10)
+    tiltX.set(-((e.clientY - r.top) / r.height - 0.5) * 10)
+  }
+
+  function resetTilt() {
+    tiltX.set(0)
+    tiltY.set(0)
+  }
 
   function open() {
     if (phase !== 'idle') return
@@ -86,7 +104,14 @@ export function KaftanBloom() {
       {/* ── The stage: kaftan ring + logo + card ── */}
       <motion.div
         className="relative aspect-square"
-        style={{ width: 'min(88vw, 60vh, 600px)' }}
+        style={{
+          width: 'min(88vw, 60vh, 600px)',
+          rotateX,
+          rotateY,
+          transformPerspective: 1100,
+        }}
+        onPointerMove={handleTilt}
+        onPointerLeave={resetTilt}
         animate={{ scale: bloomed ? 1.08 : 1 }}
         transition={{ duration: 1.6, ease }}
       >
@@ -153,6 +178,25 @@ export function KaftanBloom() {
           ))}
         </div>
 
+        {/* Slow golden sheen sweeping around the ring while it waits */}
+        {phase === 'idle' && (
+          <motion.div
+            className="pointer-events-none absolute inset-0 rounded-full"
+            style={{
+              background:
+                'conic-gradient(from 0deg, transparent 0deg, rgba(233,218,187,0.28) 18deg, transparent 42deg)',
+              WebkitMaskImage:
+                'radial-gradient(circle, transparent 38%, black 43%, black 84%, transparent 88%)',
+              maskImage:
+                'radial-gradient(circle, transparent 38%, black 43%, black 84%, transparent 88%)',
+              mixBlendMode: 'soft-light',
+            }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+            aria-hidden
+          />
+        )}
+
         {/* Logo medallion in the empty centre (wrapper centers; motion animates inside) */}
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 z-20"
@@ -194,13 +238,15 @@ export function KaftanBloom() {
               {brand.replace(/_/g, ' ')}
             </p>
 
-            <button
+            <motion.button
               type="button"
               onClick={open}
-              className="mt-10 border border-champagne/50 bg-transparent px-12 py-4 font-body text-base font-light text-champagne transition-all duration-500 hover:border-champagne hover:bg-champagne hover:text-noir focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-noir"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-10 border border-champagne/50 bg-transparent px-12 py-4 font-body text-base font-light text-champagne transition-colors duration-500 hover:border-champagne hover:bg-champagne hover:text-noir focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-noir"
             >
               {ui.openInvitation}
-            </button>
+            </motion.button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -211,7 +257,7 @@ export function KaftanBloom() {
           <motion.a
             key="scrollcue"
             href="#countdown"
-            className="absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-taupe"
+            className="absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-taupe dark:text-champagne/60"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease, delay: 0.6 }}

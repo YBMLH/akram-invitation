@@ -23,53 +23,50 @@ function WhatsappIcon({ className }: { className?: string }) {
 export function Connect() {
   const { social } = siteContent
 
+  const cards = [
+    {
+      icon: <InstagramIcon className="h-6 w-6" />,
+      kicker: 'Instagram',
+      title: social.instagram.handle,
+      action: 'Follow',
+      href: social.instagram.url,
+    },
+    {
+      icon: <WhatsappIcon className="h-6 w-6" />,
+      kicker: 'WhatsApp',
+      title: social.whatsapp.label,
+      action: 'Message',
+      href: social.whatsapp.url,
+    },
+  ]
+
   return (
     <section id="connect" className="px-6 py-24 sm:py-28">
       <div className="mx-auto max-w-4xl">
         <SectionHeading eyebrow="Stay close" title="Connect With Us" />
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2">
-          {/* Instagram */}
-          <Reveal>
-            <a
-              href={social.instagram.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex h-full flex-col items-center rounded-[1.5rem] border border-beige-deep/30 bg-ivory/70 px-8 py-11 text-center transition-all duration-500 hover:-translate-y-1 hover:border-beige-deep/60 hover:shadow-[0_28px_70px_-40px_rgba(60,45,25,0.6)]"
-            >
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-beige-deep/40 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
-                <InstagramIcon className="h-6 w-6" />
-              </span>
-              <p className="mt-6 font-body text-[0.62rem] uppercase tracking-luxe text-taupe">
-                Instagram
-              </p>
-              <p className="mt-2 font-display text-2xl text-ink">{social.instagram.handle}</p>
-              <span className="mt-6 inline-block rounded-full border border-ink/70 px-6 py-2.5 font-body text-[0.66rem] uppercase tracking-wide2 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
-                Follow
-              </span>
-            </a>
-          </Reveal>
-
-          {/* WhatsApp */}
-          <Reveal delay={0.08}>
-            <a
-              href={social.whatsapp.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex h-full flex-col items-center rounded-[1.5rem] border border-beige-deep/30 bg-ivory/70 px-8 py-11 text-center transition-all duration-500 hover:-translate-y-1 hover:border-beige-deep/60 hover:shadow-[0_28px_70px_-40px_rgba(60,45,25,0.6)]"
-            >
-              <span className="flex h-14 w-14 items-center justify-center rounded-full border border-beige-deep/40 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
-                <WhatsappIcon className="h-6 w-6" />
-              </span>
-              <p className="mt-6 font-body text-[0.62rem] uppercase tracking-luxe text-taupe">
-                WhatsApp
-              </p>
-              <p className="mt-2 font-display text-2xl text-ink">{social.whatsapp.label}</p>
-              <span className="mt-6 inline-block rounded-full border border-ink/70 px-6 py-2.5 font-body text-[0.66rem] uppercase tracking-wide2 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
-                Message
-              </span>
-            </a>
-          </Reveal>
+          {cards.map((c, i) => (
+            <Reveal key={c.kicker} delay={i * 0.08}>
+              <a
+                href={c.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex h-full flex-col items-center border border-beige-deep/35 bg-ivory/70 px-8 py-11 text-center transition-all duration-500 hover:-translate-y-1 hover:border-ink/50 hover:shadow-[0_30px_70px_-45px_rgba(30,22,12,0.8)]"
+              >
+                <span className="flex h-14 w-14 items-center justify-center rounded-full border border-beige-deep/50 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
+                  {c.icon}
+                </span>
+                <p className="mt-6 font-body text-[0.6rem] uppercase tracking-luxe text-taupe">
+                  {c.kicker}
+                </p>
+                <p className="mt-2 font-display text-2xl italic text-ink">{c.title}</p>
+                <span className="mt-6 inline-block border border-ink/60 px-7 py-2.5 font-body text-[0.64rem] uppercase tracking-wide2 text-ink transition-colors duration-500 group-hover:bg-ink group-hover:text-ivory">
+                  {c.action}
+                </span>
+              </a>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>

@@ -1,3 +1,7 @@
+import { AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { Preloader } from './components/ui/Preloader'
+import { Marquee } from './components/ui/Marquee'
 import { KaftanBloom } from './components/bloom/KaftanBloom'
 import { Countdown } from './components/sections/Countdown'
 import { Location } from './components/sections/Location'
@@ -7,11 +11,22 @@ import { Welcome } from './components/sections/Welcome'
 import { siteContent } from './config/content'
 
 export default function App() {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const id = window.setTimeout(() => setLoading(false), 2100)
+    return () => window.clearTimeout(id)
+  }, [])
+
   return (
     <div className="bg-ambient min-h-screen font-body text-ink">
+      <AnimatePresence>{loading && <Preloader />}</AnimatePresence>
+
       <main>
-        {/* Signature hero: the kaftan ring blooms open */}
+        {/* Signature hero: night atelier — the kaftan ring blooms into daylight */}
         <KaftanBloom />
+
+        <Marquee />
 
         {/* Revealed sections */}
         <Countdown />
@@ -21,8 +36,9 @@ export default function App() {
         <Welcome />
       </main>
 
-      <footer className="border-t border-beige-deep/25 px-6 py-10 text-center">
-        <p className="font-body text-[0.62rem] uppercase tracking-luxe text-taupe">
+      <footer className="border-t border-beige-deep/30 px-6 py-10 text-center">
+        <p className="font-display text-[0.7rem] text-gold">✦</p>
+        <p className="mt-3 font-body text-[0.6rem] uppercase tracking-luxe text-taupe">
           {siteContent.brand.replace(/_/g, ' ')} · {siteContent.location.label}
         </p>
         <p className="mt-2 font-body text-[0.6rem] text-taupe/70">

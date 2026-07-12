@@ -50,6 +50,8 @@ export interface SiteContent {
   }
   welcome: {
     title: string
+    /** Short Arabic greeting shown above the thank-you message. */
+    arabic: string
     paragraphs: string[]
   }
   gallery: { src: string; caption: string }[]
@@ -102,6 +104,7 @@ export const siteContent: SiteContent = {
 
   welcome: {
     title: 'With gratitude',
+    arabic: 'أهلاً وسهلاً بكم',
     paragraphs: [
       'Thank you for being part of the Style_By_IB story.',
       'It would be our honour to welcome you to the opening and to share the elegance of our craft with you.',

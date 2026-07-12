@@ -10,11 +10,15 @@ export default {
         ink: '#111111',
         taupe: '#8C8072',
         'beige-deep': '#B9A17E',
+        noir: '#171310',
+        gold: '#C2A87E',
+        champagne: '#E9DABB',
       },
       fontFamily: {
         display: ['"Cormorant Garamond"', 'serif'],
         body: ['Jost', 'system-ui', 'sans-serif'],
-        script: ['"Dancing Script"', 'cursive'],
+        script: ['"Great Vibes"', 'cursive'],
+        arabic: ['Amiri', 'serif'],
       },
       letterSpacing: {
         luxe: '0.35em',
@@ -25,14 +29,14 @@ export default {
           from: { transform: 'rotate(0deg)' },
           to: { transform: 'rotate(360deg)' },
         },
-        shimmer: {
-          '0%, 100%': { opacity: '0.4' },
-          '50%': { opacity: '1' },
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
         },
       },
       animation: {
-        spinSlow: 'spinSlow 60s linear infinite',
-        shimmer: 'shimmer 4s ease-in-out infinite',
+        spinSlow: 'spinSlow 70s linear infinite',
+        marquee: 'marquee 30s linear infinite',
       },
     },
   },

@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { siteContent } from '../../config/content'
 import { useCountdown } from '../../hooks/useCountdown'
 import { Reveal } from '../ui/Reveal'
@@ -32,19 +33,21 @@ export function Countdown() {
           </Reveal>
         ) : (
           <Reveal className="mt-14">
-            <div className="grid grid-cols-4 gap-3 sm:gap-6">
-              {units.map((u) => (
-                <div
-                  key={u.label}
-                  className="flex flex-col items-center rounded-2xl border border-beige-deep/30 bg-ivory/70 py-6 shadow-[0_18px_50px_-32px_rgba(60,45,25,0.5)] sm:py-8"
-                >
-                  <span className="font-display text-4xl font-light tabular-nums text-ink sm:text-6xl">
-                    {u.value}
-                  </span>
-                  <span className="mt-2 font-body text-[0.58rem] uppercase tracking-wide2 text-taupe sm:text-[0.68rem]">
-                    {u.label}
-                  </span>
-                </div>
+            <div className="flex items-center justify-center gap-4 sm:gap-9">
+              {units.map((u, i) => (
+                <Fragment key={u.label}>
+                  {i > 0 && (
+                    <span className="block h-12 w-px bg-beige-deep/40 sm:h-16" aria-hidden />
+                  )}
+                  <div className="flex min-w-[3.2rem] flex-col items-center sm:min-w-[5rem]">
+                    <span className="font-display text-5xl font-light tabular-nums text-ink sm:text-7xl">
+                      {u.value}
+                    </span>
+                    <span className="mt-3 font-body text-[0.56rem] uppercase tracking-wide2 text-taupe sm:text-[0.66rem]">
+                      {u.label}
+                    </span>
+                  </div>
+                </Fragment>
               ))}
             </div>
           </Reveal>

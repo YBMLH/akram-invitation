@@ -12,12 +12,33 @@ import { Gallery } from './components/sections/Gallery'
 import { Welcome } from './components/sections/Welcome'
 import { siteContent } from './config/content'
 
+function preloadImage(src: string) {
+  return new Promise<void>((resolve) => {
+    const img = new Image()
+    img.onload = () => resolve()
+    img.onerror = () => resolve()
+    img.src = src
+  })
+}
+
 export default function App() {
   const [loading, setLoading] = useState(true)
 
+  // Hold the curtain until the hero imagery is actually ready:
+  // at least 1.6s for the monogram moment, at most 6s on a slow network.
   useEffect(() => {
-    const id = window.setTimeout(() => setLoading(false), 2100)
-    return () => window.clearTimeout(id)
+    let alive = true
+    const minimum = new Promise((r) => setTimeout(r, 1600))
+    const images = Promise.all(
+      [siteContent.images.kaftanCircle, siteContent.images.logo].map(preloadImage),
+    )
+    const cap = new Promise((r) => setTimeout(r, 6000))
+    Promise.all([minimum, Promise.race([images, cap])]).then(() => {
+      if (alive) setLoading(false)
+    })
+    return () => {
+      alive = false
+    }
   }, [])
 
   return (

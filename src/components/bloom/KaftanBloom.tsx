@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useMotionValue, useSpring } from 'framer-motion'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { PointerEvent } from 'react'
 import { siteContent } from '../../config/content'
 import { PETALS } from './petals'
@@ -11,6 +11,10 @@ import { useThemeCtx } from '../../context/theme'
 type Phase = 'idle' | 'blooming' | 'revealed'
 
 const ease = [0.22, 1, 0.36, 1] as const
+
+/** 28px blurred stand-in shown instantly while the real ring downloads. */
+const RING_PLACEHOLDER =
+  'data:image/webp;base64,UklGRqYBAABXRUJQVlA4IJoBAABwCACdASocABwAPu1qrVCppaQiqAqpMB2JaACsM1j1R8gkQOwHPn3xZifOz9D+wH0gPQA/S8KI88HWGOT99KZrFl6Wjz1mJW4WQwgAAP70lin+2lLs1DGG81DwPyuGi3Q0Qkv+v7AN0/rTjlw/rkVE4VoFPfL0XRmQRCNrFJ28K3SQd0x7E9q31e2Z169iKGhWfh7iG7MuIhuyiJhbLhyDmDg5GsRRD8e1pMmQ/IJ22s+EfUQJaE8bhMC58Rs4/Oep0DylM5KSeRbB9srC9VqCHePiMy9SrB3xFFuDkT1pE5Mt+9lqAAsOsrddIAjDf0Y+XZg70sX1MPiPxWiR22IhY3//nXMH9tE3rcvmktv+nYMNeY7v6TUNCbhzluXhELFf1h5nXML99y0uRMf3uPyuUBg8aKVoWBcn0MrxtHU8dvEPZ3vKs83H3SDfymFyCnNe4x7rGsGPIbVkckuWj4ZFThF6A94nkRHMxPHxy7deTsqfVCV8oPBWWQ6traEVLdUDlpOccUWaLF6wdXTSsdLXMKQ9uBmKD/4mAA=='
 /** Outward petal travel, as a % of the stage size. */
 const OUT_PCT = 16
 /** Uniform swirl applied to every petal — the iris-opening twist. */
@@ -20,6 +24,14 @@ export function KaftanBloom() {
   const [phase, setPhase] = useState<Phase>('idle')
   const { brand, subtitle, images, ui } = siteContent
   const { setTheme } = useThemeCtx()
+  const [ringReady, setRingReady] = useState(false)
+
+  useEffect(() => {
+    const img = new Image()
+    img.onload = () => setRingReady(true)
+    img.src = images.kaftanCircle
+    if (img.complete) setRingReady(true)
+  }, [images.kaftanCircle])
 
   const bloomed = phase !== 'idle'
   const revealed = phase === 'revealed'
@@ -147,10 +159,25 @@ export function KaftanBloom() {
           )}
         </AnimatePresence>
 
+        {/* Instant blurred stand-in while the ring image downloads */}
+        <div
+          className="pointer-events-none absolute inset-[4%] rounded-full transition-opacity duration-700"
+          style={{
+            backgroundImage: `url(${RING_PLACEHOLDER})`,
+            backgroundSize: '100% 100%',
+            filter: 'blur(14px)',
+            opacity: ringReady ? 0 : 0.85,
+          }}
+          aria-hidden
+        />
+
         {/* Rotating group of petals (reconstructs the ring) */}
         <div
-          className="animate-spinSlow absolute inset-0"
-          style={{ animationPlayState: phase === 'idle' ? 'running' : 'paused' }}
+          className="animate-spinSlow absolute inset-0 transition-opacity duration-700"
+          style={{
+            animationPlayState: phase === 'idle' ? 'running' : 'paused',
+            opacity: ringReady ? 1 : 0,
+          }}
         >
           {PETALS.map((p) => (
             <motion.div

@@ -5,7 +5,7 @@ export function Marquee() {
   const items = siteContent.ui.marquee
 
   return (
-    <div className="overflow-hidden border-y border-ink/10 bg-ivory/70 py-4 transition-colors duration-500 dark:border-champagne/10 dark:bg-noir/50">
+    <div className="overflow-hidden border-y border-ink/10 bg-ivory/70 py-4 transition-colors duration-500 dark:border-gold/15 dark:bg-[#3a0d18]/50">
       <div className="flex w-max animate-marquee hover:[animation-play-state:paused]">
         {[0, 1].map((half) => (
           <div key={half} className="flex items-center" aria-hidden={half === 1}>

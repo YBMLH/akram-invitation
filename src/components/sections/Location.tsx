@@ -22,7 +22,7 @@ export function Location() {
   return (
     <section
       id="location"
-      className="bg-ivory/60 px-6 py-24 transition-colors duration-500 dark:bg-[#1B1510]/60 sm:py-28"
+      className="bg-ivory/60 px-6 py-24 transition-colors duration-500 dark:bg-[#3a0d18]/45 sm:py-28"
     >
       <div className="mx-auto max-w-4xl">
         <SectionHeading eyebrow={ui.location.eyebrow} title={ui.location.title} />

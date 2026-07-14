@@ -44,7 +44,7 @@ function InstagramCard() {
       {/* رأس الملف الشخصي */}
       <div className="flex items-center gap-4">
         <span className="rounded-full bg-gradient-to-tr from-[#feda75] via-[#d62976] to-[#4f5bd5] p-[2.5px]">
-          <span className="block rounded-full bg-white p-[2px] dark:bg-[#1b1712]">
+          <span className="block rounded-full bg-white p-[2px] dark:bg-[#3a0d18]">
             <img
               src={images.logo}
               alt=""

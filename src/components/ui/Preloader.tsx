@@ -7,7 +7,7 @@ const ease = [0.22, 1, 0.36, 1] as const
 export function Preloader() {
   return (
     <motion.div
-      className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-noir"
+      className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-[#2a0912]"
       exit={{ opacity: 0, transition: { duration: 0.9, ease } }}
       aria-hidden
     >

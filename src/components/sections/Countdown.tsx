@@ -129,14 +129,14 @@ export function Countdown() {
         className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-center"
       />
 
-      {/* حجاب داكن يعتّم الحواف ويترك الصورة تظهر في الوسط مع بقاء الأرقام واضحة */}
+      {/* حجاب عنّابي يعتّم الحواف ويترك الصورة تظهر في الوسط مع بقاء الأرقام واضحة */}
       <div
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,#171310_0%,rgba(23,19,16,0.74)_20%,rgba(23,19,16,0.5)_50%,rgba(23,19,16,0.74)_80%,#171310_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,#2a0912_0%,rgba(42,9,18,0.76)_20%,rgba(42,9,18,0.5)_50%,rgba(42,9,18,0.76)_80%,#2a0912_100%)]"
         aria-hidden
       />
       {/* تظليل جانبي خفيف لعمق سينمائي */}
       <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_50%,transparent_38%,rgba(15,12,9,0.55)_100%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_50%,transparent_38%,rgba(20,6,12,0.55)_100%)]"
         aria-hidden
       />
 

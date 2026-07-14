@@ -30,7 +30,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
       title={theme === 'light' ? 'الوضع الليلي' : 'الوضع النهاري'}
-      className="fixed end-4 top-4 z-[56] flex h-11 w-11 items-center justify-center rounded-full border border-beige-deep/50 bg-ivory/80 text-ink shadow-[0_10px_30px_-15px_rgba(30,22,12,0.6)] backdrop-blur transition-colors duration-500 dark:border-gold/40 dark:bg-noir/70 dark:text-champagne sm:end-6 sm:top-6"
+      className="fixed end-4 top-4 z-[56] flex h-11 w-11 items-center justify-center rounded-full border border-beige-deep/50 bg-ivory/80 text-ink shadow-[0_10px_30px_-15px_rgba(30,22,12,0.6)] backdrop-blur transition-colors duration-500 dark:border-gold/40 dark:bg-[#3a0d18]/75 dark:text-champagne sm:end-6 sm:top-6"
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.92 }}
       initial={{ opacity: 0, y: -10 }}

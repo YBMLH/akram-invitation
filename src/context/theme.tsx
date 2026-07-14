@@ -16,8 +16,9 @@ const ThemeContext = createContext<ThemeCtx | null>(null)
 /** Light/dark theme shared across the app, persisted in localStorage. */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === 'undefined') return 'light'
-    return window.localStorage.getItem(STORAGE_KEY) === 'dark' ? 'dark' : 'light'
+    if (typeof window === 'undefined') return 'dark'
+    // البورجندي (الوضع الداكن) هو الافتراضي؛ النهاري فقط إذا اختاره الزائر صراحةً
+    return window.localStorage.getItem(STORAGE_KEY) === 'light' ? 'light' : 'dark'
   })
 
   useEffect(() => {

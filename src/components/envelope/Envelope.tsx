@@ -44,7 +44,7 @@ export function Envelope() {
 
   function open() {
     if (phase !== 'idle') return
-    setTheme('light')
+    setTheme('dark')
     setPhase('opening')
     window.setTimeout(() => setPhase('revealed'), 1250)
   }
@@ -114,7 +114,7 @@ export function Envelope() {
           />
 
           {/* السطر التمهيدي على اللسان */}
-          <p className="absolute inset-x-0 top-[11%] text-center font-body text-sm font-light tracking-wide text-[#4a3a28]/70 sm:text-base">
+          <p className="absolute inset-x-0 top-[11%] text-center font-body text-sm font-light tracking-wide text-champagne/75 sm:text-base">
             {ui.invitedEyebrow}
           </p>
 
@@ -168,7 +168,7 @@ export function Envelope() {
         {!opened && (
           <motion.p
             key="hint"
-            className="absolute bottom-[12%] left-1/2 z-30 -translate-x-1/2 text-center font-body text-sm font-light text-[#4a3a28]/70"
+            className="absolute bottom-[12%] left-1/2 z-30 -translate-x-1/2 text-center font-body text-sm font-light text-champagne/75"
             initial={{ opacity: 0 }}
             animate={{ opacity: [0.45, 0.9, 0.45] }}
             exit={{ opacity: 0, transition: { duration: 0.4, ease } }}

@@ -29,21 +29,21 @@ body {
     radial-gradient(120% 80% at 50% 12%, #fffdf8 0%, #f8f4ec 42%, #efe7d7 100%);
 }
 
-/* ── Dark theme: the whole maison at night ── */
+/* ── Burgundy maison: deep wine backgrounds with gold ── */
 .dark {
   color-scheme: dark;
 }
 .dark body {
-  background-color: #171310;
+  background-color: #2a0912;
   color: #ede3cf;
 }
 .dark .bg-ambient {
   background:
-    radial-gradient(120% 80% at 50% 12%, #221b14 0%, #171310 48%, #0f0c09 100%);
+    radial-gradient(120% 80% at 50% 12%, #4a1020 0%, #2f0b16 48%, #1e0710 100%);
 }
 .dark ::selection {
   background: #c2a87e;
-  color: #171310;
+  color: #2a0912;
 }
 
 /* Cinematic film grain laid over the whole experience */

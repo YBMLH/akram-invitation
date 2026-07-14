@@ -50,6 +50,10 @@ export interface SiteContent {
     paragraphs: string[]
   }
   images: {
+    /** جسم الظرف (صورة حقيقية مع الداخل المعتم) */
+    envelopeBody: string
+    /** لسان الظرف المقصوص (يُفتح) */
+    envelopeFlap: string
     /** الختم الشمعي — زر فتح الظرف */
     seal: string
     logo: string
@@ -131,6 +135,8 @@ export const siteContent: SiteContent = {
   },
 
   images: {
+    envelopeBody: asset('/assets/envelope-body.webp'),
+    envelopeFlap: asset('/assets/envelope-flap.webp'),
     seal: asset('/assets/seal.webp'),
     logo: asset('/assets/logo.webp'),
   },

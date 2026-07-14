@@ -29,7 +29,11 @@ export default function App() {
     let alive = true
     const minimum = new Promise((r) => setTimeout(r, 1600))
     const images = Promise.all(
-      [siteContent.images.seal, siteContent.images.logo].map(preloadImage),
+      [
+        siteContent.images.envelopeBody,
+        siteContent.images.envelopeFlap,
+        siteContent.images.seal,
+      ].map(preloadImage),
     )
     const cap = new Promise((r) => setTimeout(r, 6000))
     Promise.all([minimum, Promise.race([images, cap])]).then(() => {

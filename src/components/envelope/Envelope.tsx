@@ -11,12 +11,11 @@ type Phase = 'idle' | 'opening' | 'revealed'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
-/** ارتفاع اللسان / نقطة الختم كنسبة من ارتفاع الشاشة */
-const FLAP_TIP = 50
-
-/** نسيج ورقي خفيف */
-const PAPER_TEXTURE =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.5'/%3E%3C/svg%3E\")"
+/** موضع طرف اللسان في صورة الظرف (نسبة) — حيث يُوضع الختم */
+const TIP_X = 50.5
+const TIP_Y = 57.3
+/** أبعاد صورة الظرف الأصلية */
+const IMG_RATIO = 768 / 1388 // العرض/الارتفاع
 
 export function Envelope() {
   const [phase, setPhase] = useState<Phase>('idle')
@@ -35,8 +34,8 @@ export function Envelope() {
   function handleTilt(e: PointerEvent<HTMLDivElement>) {
     if (opened) return
     const r = e.currentTarget.getBoundingClientRect()
-    tiltY.set(((e.clientX - r.left) / r.width - 0.5) * 5)
-    tiltX.set(-((e.clientY - r.top) / r.height - 0.5) * 5)
+    tiltY.set(((e.clientX - r.left) / r.width - 0.5) * 4)
+    tiltX.set(-((e.clientY - r.top) / r.height - 0.5) * 4)
   }
 
   function resetTilt() {
@@ -46,166 +45,105 @@ export function Envelope() {
 
   function open() {
     if (phase !== 'idle') return
-    // فتح الدعوة يقود دائماً إلى ضوء النهار
     setTheme('light')
     setPhase('opening')
-    // اللسان يُفتح ويتلاشى الظرف ثم تظهر البطاقة
     window.setTimeout(() => setPhase('revealed'), 1400)
   }
+
+  // صندوق يغطّي الشاشة مع الحفاظ على نسبة صورة الظرف
+  const coverStyle = {
+    width: `max(100vw, calc(100svh * ${IMG_RATIO}))`,
+    aspectRatio: '768 / 1388',
+  } as const
 
   return (
     <section
       id="invitation"
-      className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden"
+      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden"
     >
-      {/* هالة ضوء دافئة خلف الظرف */}
+      {/* هالة ضوء دافئة */}
       <motion.div
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 z-0"
         initial={false}
-        animate={{ opacity: opened ? 1 : 0.9 }}
+        animate={{ opacity: opened ? 1 : 0.85 }}
         transition={{ duration: 1.4, ease }}
         style={{
           background:
-            'radial-gradient(70% 55% at 50% 46%, rgba(233,218,187,0.35) 0%, rgba(194,168,126,0) 70%)',
+            'radial-gradient(70% 55% at 50% 46%, rgba(233,218,187,0.4) 0%, rgba(160,130,90,0) 72%)',
         }}
         aria-hidden
       />
 
-      {/* ── الظرف بملء الشاشة ── */}
+      {/* ── مسرح الظرف (صورة حقيقية مقصوصة إلى جسم + لسان) ── */}
       <motion.div
-        className="absolute inset-0 z-10"
-        style={{ rotateX, rotateY, transformPerspective: 1400, transformStyle: 'preserve-3d' }}
+        className="absolute left-1/2 top-1/2 z-10"
+        style={{
+          ...coverStyle,
+          x: '-50%',
+          y: '-50%',
+          rotateX,
+          rotateY,
+          transformPerspective: 1600,
+          transformStyle: 'preserve-3d',
+        }}
         onPointerMove={handleTilt}
         onPointerLeave={resetTilt}
         initial={false}
         animate={{ opacity: revealed ? 0 : 1 }}
-        transition={{ duration: 0.7, ease, delay: revealed ? 0 : 0 }}
+        transition={{ duration: 0.7, ease }}
       >
-        {/* جسم الظرف */}
-        <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(180deg, #F7F1E5 0%, #EFE7D6 100%)' }}
+        {/* جسم الظرف (مع الداخل المعتم) */}
+        <img
+          src={images.envelopeBody}
+          alt=""
+          className="absolute inset-0 h-full w-full select-none object-fill"
+          draggable={false}
         />
 
-        {/* البطانة الداخلية (تظهر عند فتح اللسان) */}
-        <div
-          className="absolute inset-x-0 top-0"
-          style={{
-            height: `${FLAP_TIP}%`,
-            background: 'linear-gradient(180deg, #DED0B6 0%, #EADEC7 100%)',
-          }}
-        />
-
-        {/* الطيّتان الجانبيتان */}
-        <div
-          className="absolute inset-0"
-          style={{
-            clipPath: 'polygon(0 0, 0 100%, 52% 50%)',
-            background: 'linear-gradient(105deg, #FCF7EC 0%, #EFE6D2 88%)',
-            filter: 'drop-shadow(1px 0 1px rgba(120,100,70,0.16))',
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            clipPath: 'polygon(100% 0, 100% 100%, 48% 50%)',
-            background: 'linear-gradient(255deg, #FCF7EC 0%, #EFE6D2 88%)',
-            filter: 'drop-shadow(-1px 0 1px rgba(120,100,70,0.16))',
-          }}
-        />
-
-        {/* الطية السفلية */}
-        <div
-          className="absolute inset-0"
-          style={{
-            clipPath: 'polygon(0 100%, 100% 100%, 50% 42%)',
-            background: 'linear-gradient(0deg, #FFFDF8 0%, #F3EBDB 92%)',
-            filter: 'drop-shadow(0 -1px 1px rgba(120,100,70,0.2))',
-          }}
-        />
-
-        {/* نسيج ورقي خفيف */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-multiply"
-          style={{ backgroundImage: PAPER_TEXTURE, backgroundSize: '180px 180px' }}
-          aria-hidden
-        />
-
-        {/* السطر التمهيدي على اللسان (فوق الختم) */}
+        {/* السطر التمهيدي على اللسان */}
         <motion.p
-          className="absolute inset-x-0 top-[13%] z-[25] text-center font-body text-sm font-light tracking-wide text-ink/50 sm:text-base"
+          className="absolute inset-x-0 top-[9%] z-[15] text-center font-body text-sm font-light tracking-wide text-[#4a3a28] sm:text-base"
           initial={false}
-          animate={{ opacity: opened ? 0 : 1 }}
+          animate={{ opacity: opened ? 0 : 0.85 }}
           transition={{ duration: 0.5, ease }}
         >
           {ui.invitedEyebrow}
         </motion.p>
 
-        {/* سطر الإهداء أسفل الختم */}
-        <motion.p
-          className="absolute inset-x-0 text-center font-ruqaa text-2xl text-ink/70 sm:text-3xl"
-          style={{ top: `${FLAP_TIP + 12}%` }}
-          initial={false}
-          animate={{ opacity: opened ? 0 : 1 }}
-          transition={{ duration: 0.5, ease }}
-        >
-          {ui.sealNote}
-        </motion.p>
-
-        {/* التلميح النابض */}
-        <motion.p
-          className="absolute inset-x-0 text-center font-body text-sm font-light text-ink/50"
-          style={{ top: `${FLAP_TIP + 24}%` }}
-          initial={false}
-          animate={opened ? { opacity: 0 } : { opacity: [0.45, 0.9, 0.45] }}
-          transition={
-            opened
-              ? { duration: 0.4, ease }
-              : { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }
-          }
-        >
-          ✦ {ui.openInvitation} ✦
-        </motion.p>
-
-        {/* ── اللسان العلوي (يدور حول حافته العليا) ── */}
+        {/* ── اللسان العلوي — قطعة منفصلة تُفتح ── */}
         <motion.div
-          className="absolute inset-x-0 top-0 z-20"
-          style={{
-            height: `${FLAP_TIP}%`,
-            transformOrigin: 'top center',
-            transformStyle: 'preserve-3d',
-            transformPerspective: 1200,
-          }}
+          className="absolute inset-0 z-20"
+          style={{ transformOrigin: 'top center', transformStyle: 'preserve-3d' }}
           initial={false}
-          animate={{ rotateX: opened ? -179 : 0 }}
-          transition={{ duration: 0.9, ease, delay: opened ? 0.25 : 0 }}
+          animate={{ rotateX: opened ? -172 : 0 }}
+          transition={{ duration: 0.95, ease, delay: opened ? 0.2 : 0 }}
         >
           {/* الوجه الخارجي */}
-          <div
-            className="absolute inset-0 [backface-visibility:hidden]"
-            style={{
-              clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
-              background: 'linear-gradient(180deg, #FFFDF8 0%, #F1E8D6 80%, #E6DAC2 100%)',
-              filter: 'drop-shadow(0 4px 6px rgba(90,70,45,0.24))',
-            }}
+          <img
+            src={images.envelopeFlap}
+            alt=""
+            className="absolute inset-0 h-full w-full select-none object-fill [backface-visibility:hidden]"
+            style={{ filter: opened ? 'brightness(0.97)' : 'none' }}
+            draggable={false}
           />
-          {/* الوجه الداخلي */}
-          <div
-            className="absolute inset-0 [backface-visibility:hidden]"
-            style={{
-              clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
-              background: 'linear-gradient(0deg, #E2D3B7 0%, #D7C6A4 100%)',
-              transform: 'rotateX(180deg)',
-            }}
+          {/* الوجه الداخلي (أغمق قليلاً) */}
+          <img
+            src={images.envelopeFlap}
+            alt=""
+            className="absolute inset-0 h-full w-full select-none object-fill [backface-visibility:hidden]"
+            style={{ transform: 'rotateX(180deg)', filter: 'brightness(0.72) contrast(1.02)' }}
+            draggable={false}
+            aria-hidden
           />
         </motion.div>
 
-        {/* ── الختم الشمعي على طرف اللسان — هو الزر ── */}
+        {/* ── الختم الشمعي على طرف اللسان — الزر ── */}
         <div
-          className="absolute left-1/2 z-30"
+          className="absolute z-30"
           style={{
-            top: `${FLAP_TIP}%`,
-            width: 'min(34vw, 188px)',
+            left: `${TIP_X}%`,
+            top: `${TIP_Y}%`,
+            width: 'min(26vw, 150px)',
             transform: 'translate(-50%, -50%)',
           }}
         >
@@ -227,42 +165,43 @@ export function Envelope() {
             whileTap={opened ? undefined : { scale: 0.92 }}
             transition={{ duration: 0.5, ease }}
           >
-            {/* حلقة نبض تدعو للضغط */}
             {!opened && (
               <motion.span
-                className="absolute -inset-3 rounded-full border border-gold/50"
-                animate={{ scale: [1, 1.22], opacity: [0.7, 0] }}
+                className="absolute -inset-3 rounded-full border border-[#5a4632]/40"
+                animate={{ scale: [1, 1.22], opacity: [0.6, 0] }}
                 transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
                 aria-hidden
               />
             )}
-            {/* ظل تحت الختم */}
             <span
-              className="absolute -bottom-3 left-1/2 h-4 w-3/4 -translate-x-1/2 rounded-[50%] bg-black/45 blur-md"
+              className="absolute -bottom-3 left-1/2 h-4 w-3/4 -translate-x-1/2 rounded-[50%] bg-black/40 blur-md"
               aria-hidden
             />
             <img
               src={images.seal}
               alt=""
-              className="relative block w-full select-none rounded-full drop-shadow-[0_18px_30px_rgba(0,0,0,0.5)]"
+              className="relative block w-full select-none rounded-full drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)]"
               draggable={false}
             />
           </motion.button>
         </div>
       </motion.div>
 
-      {/* تظليل خفيف للأطراف يرتفع عند الفتح (عمق ودفء) */}
-      <motion.div
-        className="pointer-events-none absolute inset-0 z-20"
-        initial={false}
-        animate={{ opacity: opened ? 0 : 1 }}
-        transition={{ duration: 1.2, ease }}
-        style={{
-          background:
-            'radial-gradient(75% 60% at 50% 48%, rgba(20,14,8,0) 45%, rgba(20,14,8,0.28) 100%)',
-        }}
-        aria-hidden
-      />
+      {/* التلميح النابض أسفل الشاشة */}
+      <AnimatePresence>
+        {!opened && (
+          <motion.p
+            key="hint"
+            className="absolute bottom-[12%] left-1/2 z-30 -translate-x-1/2 text-center font-body text-sm font-light text-[#4a3a28]/70"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.45, 0.9, 0.45] }}
+            exit={{ opacity: 0, transition: { duration: 0.4, ease } }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            ✦ {ui.openInvitation} ✦
+          </motion.p>
+        )}
+      </AnimatePresence>
 
       {/* ذرات ضوء */}
       <Particles active={opened} />

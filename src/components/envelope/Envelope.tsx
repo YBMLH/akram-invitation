@@ -194,7 +194,7 @@ export function Envelope() {
         <motion.img
           src={images.invitationCard}
           alt="دعوة — ستايل باي إيب"
-          className="absolute inset-0 h-full w-full select-none object-contain"
+          className="absolute inset-0 h-full w-full select-none object-cover"
           draggable={false}
           initial={false}
           animate={{ scale: revealed ? 1 : 1.04 }}

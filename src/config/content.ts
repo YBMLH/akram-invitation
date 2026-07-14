@@ -49,9 +49,9 @@ export interface SiteContent {
     arabic: string
     paragraphs: string[]
   }
-  gallery: { src: string; caption: string }[]
   images: {
-    kaftanCircle: string
+    /** الختم الشمعي — زر فتح الظرف */
+    seal: string
     logo: string
   }
   /** نصوص الواجهة (أزرار، عناوين، شريط متحرك…) */
@@ -70,6 +70,7 @@ export interface SiteContent {
       seconds: string
     }
     location: { eyebrow: string; title: string; kicker: string; openMaps: string }
+    sealNote: string
     connect: {
       eyebrow: string
       title: string
@@ -78,7 +79,6 @@ export interface SiteContent {
       follow: string
       message: string
     }
-    gallery: { eyebrow: string; title: string }
     footerNote: string
   }
 }
@@ -130,23 +130,14 @@ export const siteContent: SiteContent = {
     ],
   },
 
-  gallery: [
-    { src: asset('/assets/gallery/design-1.webp'), caption: 'قفطان العروس' },
-    { src: asset('/assets/gallery/design-4.webp'), caption: 'عروس الدانتيل' },
-    { src: asset('/assets/gallery/design-2.webp'), caption: 'الكاراكو الذهبي' },
-    { src: asset('/assets/gallery/design-5.webp'), caption: 'سهرة العنّابي' },
-    { src: asset('/assets/gallery/design-6.webp'), caption: 'كاراكو الليل' },
-    { src: asset('/assets/gallery/design-3.webp'), caption: 'سهرة الزمرد' },
-  ],
-
   images: {
-    kaftanCircle: asset('/assets/kaftan-circle.webp'),
+    seal: asset('/assets/seal.webp'),
     logo: asset('/assets/logo.webp'),
   },
 
   ui: {
     invitedEyebrow: 'أنتم مدعوون بكل حب',
-    openInvitation: 'اضغطوا على الشعار لفتح الدعوة',
+    openInvitation: 'اضغطوا على الختم لفتح الدعوة',
     scroll: 'مرّروا للأسفل',
     marquee: ['الافتتاح الكبير', 'Style by IB', 'قالمة · الجزائر', 'قفطان وأناقة'],
     countdown: {
@@ -172,10 +163,7 @@ export const siteContent: SiteContent = {
       follow: 'تابعونا',
       message: 'راسلونا',
     },
-    gallery: {
-      eyebrow: '',
-      title: 'Gallery',
-    },
+    sealNote: 'هذه الدعوة خاصة بكم',
     footerNote: 'الافتتاح الكبير — بكل حب وأناقة',
   },
 }

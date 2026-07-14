@@ -4,11 +4,10 @@ import { Preloader } from './components/ui/Preloader'
 import { ThemeToggle } from './components/ui/ThemeToggle'
 import { ScrollProgress } from './components/ui/ScrollProgress'
 import { Marquee } from './components/ui/Marquee'
-import { KaftanBloom } from './components/bloom/KaftanBloom'
+import { Envelope } from './components/envelope/Envelope'
 import { Countdown } from './components/sections/Countdown'
 import { Location } from './components/sections/Location'
 import { Connect } from './components/sections/Connect'
-import { Gallery } from './components/sections/Gallery'
 import { Welcome } from './components/sections/Welcome'
 import { siteContent } from './config/content'
 
@@ -30,7 +29,7 @@ export default function App() {
     let alive = true
     const minimum = new Promise((r) => setTimeout(r, 1600))
     const images = Promise.all(
-      [siteContent.images.kaftanCircle, siteContent.images.logo].map(preloadImage),
+      [siteContent.images.seal, siteContent.images.logo].map(preloadImage),
     )
     const cap = new Promise((r) => setTimeout(r, 6000))
     Promise.all([minimum, Promise.race([images, cap])]).then(() => {
@@ -49,8 +48,8 @@ export default function App() {
       <ThemeToggle />
 
       <main>
-        {/* Signature hero: night atelier — the kaftan ring blooms into daylight */}
-        <KaftanBloom />
+        {/* الواجهة: ظرف مختوم بالشمع يُفتح إلى ضوء النهار */}
+        <Envelope />
 
         <Marquee />
 
@@ -58,7 +57,6 @@ export default function App() {
         <Countdown />
         <Location />
         <Connect />
-        <Gallery />
         <Welcome />
       </main>
 

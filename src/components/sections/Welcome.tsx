@@ -6,14 +6,6 @@ export function Welcome() {
 
   return (
     <section id="welcome" className="relative overflow-hidden px-6 py-28 sm:py-32">
-      {/* صدى خافت للحلقة المركزية */}
-      <img
-        src={siteContent.images.kaftanCircle}
-        alt=""
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 w-[130%] max-w-none -translate-x-1/2 -translate-y-1/2 opacity-[0.05]"
-      />
-
       <div className="relative mx-auto max-w-2xl text-center">
         <Reveal>
           <p className="font-ruqaa text-4xl leading-relaxed text-gold sm:text-5xl">

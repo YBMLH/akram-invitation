@@ -11,12 +11,16 @@ type Phase = 'idle' | 'opening' | 'revealed'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
-/** نقطة التقاء اللسان مع جسم الظرف (نسبة من ارتفاع الظرف) */
-const FLAP_TIP = 58
+/** ارتفاع اللسان / نقطة الختم كنسبة من ارتفاع الشاشة */
+const FLAP_TIP = 50
+
+/** نسيج ورقي خفيف */
+const PAPER_TEXTURE =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.5'/%3E%3C/svg%3E\")"
 
 export function Envelope() {
   const [phase, setPhase] = useState<Phase>('idle')
-  const { brand, subtitle, images, ui } = siteContent
+  const { images, ui } = siteContent
   const { setTheme } = useThemeCtx()
 
   const opened = phase !== 'idle'
@@ -25,13 +29,14 @@ export function Envelope() {
   // إمالة ثلاثية الأبعاد لطيفة نحو المؤشر
   const tiltX = useMotionValue(0)
   const tiltY = useMotionValue(0)
-  const rotateX = useSpring(tiltX, { stiffness: 60, damping: 14 })
-  const rotateY = useSpring(tiltY, { stiffness: 60, damping: 14 })
+  const rotateX = useSpring(tiltX, { stiffness: 60, damping: 16 })
+  const rotateY = useSpring(tiltY, { stiffness: 60, damping: 16 })
 
   function handleTilt(e: PointerEvent<HTMLDivElement>) {
+    if (opened) return
     const r = e.currentTarget.getBoundingClientRect()
-    tiltY.set(((e.clientX - r.left) / r.width - 0.5) * 8)
-    tiltX.set(-((e.clientY - r.top) / r.height - 0.5) * 8)
+    tiltY.set(((e.clientX - r.left) / r.width - 0.5) * 5)
+    tiltX.set(-((e.clientY - r.top) / r.height - 0.5) * 5)
   }
 
   function resetTilt() {
@@ -44,286 +49,231 @@ export function Envelope() {
     // فتح الدعوة يقود دائماً إلى ضوء النهار
     setTheme('light')
     setPhase('opening')
-    // اللسان يُفتح ثم ترتفع البطاقة
-    window.setTimeout(() => setPhase('revealed'), 1500)
+    // اللسان يُفتح ويتلاشى الظرف ثم تظهر البطاقة
+    window.setTimeout(() => setPhase('revealed'), 1400)
   }
 
   return (
     <section
       id="invitation"
-      className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-6 py-16"
+      className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden"
     >
-      {/* ── مشهد الأتيلييه الليلي — يذوب في ضوء النهار عند الفتح ── */}
+      {/* هالة ضوء دافئة خلف الظرف */}
       <motion.div
         className="pointer-events-none absolute inset-0"
+        initial={false}
+        animate={{ opacity: opened ? 1 : 0.9 }}
+        transition={{ duration: 1.4, ease }}
         style={{
           background:
-            'radial-gradient(90% 70% at 50% 42%, #2A2118 0%, #1D1712 46%, #171310 100%)',
+            'radial-gradient(70% 55% at 50% 46%, rgba(233,218,187,0.35) 0%, rgba(194,168,126,0) 70%)',
         }}
-        initial={false}
-        animate={{ opacity: opened ? 0 : 1 }}
-        transition={{ duration: 2, ease, delay: opened ? 0.55 : 0 }}
         aria-hidden
       />
 
-      {/* الأشرطة الجانبية اللاتينية (سطح المكتب فقط) */}
-      <AnimatePresence>
-        {!opened && (
-          <motion.div
-            key="rails"
-            className="pointer-events-none absolute inset-y-0 left-0 right-0 hidden md:block"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease }}
-            aria-hidden
-          >
-            <span className="absolute left-8 top-1/2 -translate-y-1/2 -rotate-90 whitespace-nowrap font-latin text-[0.6rem] uppercase tracking-luxe text-champagne/40">
-              Guelma · Algeria
-            </span>
-            <span className="absolute right-8 top-1/2 -translate-y-1/2 rotate-90 whitespace-nowrap font-latin text-[0.6rem] uppercase tracking-luxe text-champagne/40">
-              Caftan Couture
-            </span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* السطر التمهيدي فوق الظرف */}
-      <AnimatePresence>
-        {!opened && (
-          <motion.p
-            key="eyebrow"
-            className="relative mb-9 text-center font-body text-base font-light text-champagne/80 sm:mb-11"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.9, ease }}
-          >
-            {ui.invitedEyebrow}
-          </motion.p>
-        )}
-      </AnimatePresence>
-
-      {/* ── المسرح: الظرف + الختم + البطاقة ── */}
+      {/* ── الظرف بملء الشاشة ── */}
       <motion.div
-        className="relative"
-        style={{
-          width: 'min(88vw, 540px)',
-          aspectRatio: '4 / 3',
-          rotateX,
-          rotateY,
-          transformPerspective: 1200,
-        }}
+        className="absolute inset-0 z-10"
+        style={{ rotateX, rotateY, transformPerspective: 1400, transformStyle: 'preserve-3d' }}
         onPointerMove={handleTilt}
         onPointerLeave={resetTilt}
+        initial={false}
+        animate={{ opacity: revealed ? 0 : 1 }}
+        transition={{ duration: 0.7, ease, delay: revealed ? 0 : 0 }}
       >
-        {/* هالة ضوء خلف الظرف */}
-        <motion.div
-          className="pointer-events-none absolute inset-[-18%] rounded-full blur-3xl"
-          initial={false}
-          animate={{ opacity: opened ? 0.9 : 0.5 }}
-          transition={{ duration: 1.6, ease }}
+        {/* جسم الظرف */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(180deg, #F7F1E5 0%, #EFE7D6 100%)' }}
+        />
+
+        {/* البطانة الداخلية (تظهر عند فتح اللسان) */}
+        <div
+          className="absolute inset-x-0 top-0"
           style={{
-            background:
-              'radial-gradient(circle, rgba(233,218,187,0.5) 0%, rgba(194,168,126,0.16) 50%, rgba(194,168,126,0) 74%)',
+            height: `${FLAP_TIP}%`,
+            background: 'linear-gradient(180deg, #DED0B6 0%, #EADEC7 100%)',
           }}
+        />
+
+        {/* الطيّتان الجانبيتان */}
+        <div
+          className="absolute inset-0"
+          style={{
+            clipPath: 'polygon(0 0, 0 100%, 52% 50%)',
+            background: 'linear-gradient(105deg, #FCF7EC 0%, #EFE6D2 88%)',
+            filter: 'drop-shadow(1px 0 1px rgba(120,100,70,0.16))',
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            clipPath: 'polygon(100% 0, 100% 100%, 48% 50%)',
+            background: 'linear-gradient(255deg, #FCF7EC 0%, #EFE6D2 88%)',
+            filter: 'drop-shadow(-1px 0 1px rgba(120,100,70,0.16))',
+          }}
+        />
+
+        {/* الطية السفلية */}
+        <div
+          className="absolute inset-0"
+          style={{
+            clipPath: 'polygon(0 100%, 100% 100%, 50% 42%)',
+            background: 'linear-gradient(0deg, #FFFDF8 0%, #F3EBDB 92%)',
+            filter: 'drop-shadow(0 -1px 1px rgba(120,100,70,0.2))',
+          }}
+        />
+
+        {/* نسيج ورقي خفيف */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-multiply"
+          style={{ backgroundImage: PAPER_TEXTURE, backgroundSize: '180px 180px' }}
           aria-hidden
         />
 
-        {/* ── الظرف نفسه ── */}
-        <motion.div
-          className="absolute inset-0"
+        {/* السطر التمهيدي على اللسان (فوق الختم) */}
+        <motion.p
+          className="absolute inset-x-0 top-[13%] z-[25] text-center font-body text-sm font-light tracking-wide text-ink/50 sm:text-base"
           initial={false}
-          animate={
-            revealed
-              ? { y: '9%', scale: 0.94, opacity: 0.55 }
-              : { y: '0%', scale: 1, opacity: 1 }
-          }
-          transition={{ duration: 1.1, ease }}
+          animate={{ opacity: opened ? 0 : 1 }}
+          transition={{ duration: 0.5, ease }}
         >
-          {/* ظل أرضي */}
-          <div
-            className="pointer-events-none absolute -bottom-7 left-1/2 h-7 w-[86%] -translate-x-1/2 rounded-[50%] bg-black/40 blur-lg"
-            aria-hidden
-          />
+          {ui.invitedEyebrow}
+        </motion.p>
 
-          {/* جيب الظرف الخلفي */}
+        {/* سطر الإهداء أسفل الختم */}
+        <motion.p
+          className="absolute inset-x-0 text-center font-ruqaa text-2xl text-ink/70 sm:text-3xl"
+          style={{ top: `${FLAP_TIP + 12}%` }}
+          initial={false}
+          animate={{ opacity: opened ? 0 : 1 }}
+          transition={{ duration: 0.5, ease }}
+        >
+          {ui.sealNote}
+        </motion.p>
+
+        {/* التلميح النابض */}
+        <motion.p
+          className="absolute inset-x-0 text-center font-body text-sm font-light text-ink/50"
+          style={{ top: `${FLAP_TIP + 24}%` }}
+          initial={false}
+          animate={opened ? { opacity: 0 } : { opacity: [0.45, 0.9, 0.45] }}
+          transition={
+            opened
+              ? { duration: 0.4, ease }
+              : { duration: 2.4, repeat: Infinity, ease: 'easeInOut' }
+          }
+        >
+          ✦ {ui.openInvitation} ✦
+        </motion.p>
+
+        {/* ── اللسان العلوي (يدور حول حافته العليا) ── */}
+        <motion.div
+          className="absolute inset-x-0 top-0 z-20"
+          style={{
+            height: `${FLAP_TIP}%`,
+            transformOrigin: 'top center',
+            transformStyle: 'preserve-3d',
+            transformPerspective: 1200,
+          }}
+          initial={false}
+          animate={{ rotateX: opened ? -179 : 0 }}
+          transition={{ duration: 0.9, ease, delay: opened ? 0.25 : 0 }}
+        >
+          {/* الوجه الخارجي */}
           <div
-            className="absolute inset-0 rounded-lg shadow-[0_45px_90px_-30px_rgba(20,14,8,0.65)]"
+            className="absolute inset-0 [backface-visibility:hidden]"
             style={{
-              background: 'linear-gradient(180deg, #F6F0E4 0%, #EFE7D7 100%)',
+              clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
+              background: 'linear-gradient(180deg, #FFFDF8 0%, #F1E8D6 80%, #E6DAC2 100%)',
+              filter: 'drop-shadow(0 4px 6px rgba(90,70,45,0.24))',
             }}
           />
-
-          {/* البطانة الداخلية الظاهرة عند الفتح */}
+          {/* الوجه الداخلي */}
           <div
-            className="absolute inset-x-0 top-0 rounded-t-lg"
+            className="absolute inset-0 [backface-visibility:hidden]"
             style={{
-              height: `${FLAP_TIP}%`,
-              background: 'linear-gradient(180deg, #DECFB4 0%, #EBDFC8 100%)',
+              clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
+              background: 'linear-gradient(0deg, #E2D3B7 0%, #D7C6A4 100%)',
+              transform: 'rotateX(180deg)',
             }}
           />
-
-          {/* الطيّتان الجانبيتان */}
-          <div
-            className="absolute inset-0 rounded-lg"
-            style={{
-              clipPath: 'polygon(0 0, 0 100%, 54% 52%)',
-              background: 'linear-gradient(105deg, #FBF6EB 0%, #EFE6D3 85%)',
-              filter: 'drop-shadow(1px 0 1px rgba(120,100,70,0.18))',
-            }}
-          />
-          <div
-            className="absolute inset-0 rounded-lg"
-            style={{
-              clipPath: 'polygon(100% 0, 100% 100%, 46% 52%)',
-              background: 'linear-gradient(255deg, #FBF6EB 0%, #EFE6D3 85%)',
-              filter: 'drop-shadow(-1px 0 1px rgba(120,100,70,0.18))',
-            }}
-          />
-
-          {/* الطية السفلية */}
-          <div
-            className="absolute inset-0 rounded-lg"
-            style={{
-              clipPath: 'polygon(0 100%, 100% 100%, 50% 44%)',
-              background: 'linear-gradient(0deg, #FFFDF8 0%, #F3EBDB 90%)',
-              filter: 'drop-shadow(0 -1px 1px rgba(120,100,70,0.22))',
-            }}
-          />
-
-          {/* سطر الإهداء على جسم الظرف */}
-          <motion.p
-            className="absolute inset-x-0 text-center font-ruqaa text-xl text-ink/70 sm:text-2xl"
-            style={{ top: `${FLAP_TIP + 25}%` }}
-            initial={false}
-            animate={{ opacity: opened ? 0 : 1 }}
-            transition={{ duration: 0.5, ease }}
-          >
-            {ui.sealNote}
-          </motion.p>
-
-          {/* ── اللسان العلوي (يدور حول حافته العليا) ── */}
-          <motion.div
-            className="absolute inset-x-0 top-0 z-20"
-            style={{
-              height: `${FLAP_TIP + 2}%`,
-              transformOrigin: 'top center',
-              transformStyle: 'preserve-3d',
-              transformPerspective: 900,
-            }}
-            initial={false}
-            animate={{ rotateX: opened ? -178 : 0 }}
-            transition={{ duration: 1.0, ease, delay: opened ? 0.35 : 0 }}
-          >
-            {/* الوجه الخارجي */}
-            <div
-              className="absolute inset-0 rounded-t-lg [backface-visibility:hidden]"
-              style={{
-                clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
-                background: 'linear-gradient(180deg, #FFFDF8 0%, #F1E8D6 78%, #E7DCC5 100%)',
-                filter: 'drop-shadow(0 3px 4px rgba(90,70,45,0.28))',
-              }}
-            />
-            {/* الوجه الداخلي (يظهر بعد الدوران) */}
-            <div
-              className="absolute inset-0 rounded-t-lg [backface-visibility:hidden]"
-              style={{
-                clipPath: 'polygon(0 0, 100% 0, 50% 100%)',
-                background: 'linear-gradient(0deg, #E4D6BB 0%, #D9C8A8 100%)',
-                transform: 'rotateX(180deg)',
-              }}
-            />
-          </motion.div>
-
-          {/* ── الختم الشمعي — هو الزر ── */}
-          <div
-            className="absolute left-1/2 z-30"
-            style={{
-              top: `${FLAP_TIP}%`,
-              width: 'min(28%, 140px)',
-              transform: 'translate(-50%, -50%)',
-            }}
-          >
-            <motion.button
-              type="button"
-              onClick={open}
-              disabled={opened}
-              aria-label={ui.openInvitation}
-              className={`relative block w-full rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-transparent ${
-                opened ? 'pointer-events-none' : ''
-              }`}
-              initial={false}
-              animate={
-                opened
-                  ? { opacity: 0, scale: 1.25, rotate: [0, -7, 6, 0] }
-                  : { opacity: 1, scale: 1, rotate: 0 }
-              }
-              whileHover={opened ? undefined : { scale: 1.07 }}
-              whileTap={opened ? undefined : { scale: 0.92 }}
-              transition={{ duration: 0.55, ease }}
-            >
-              {/* حلقة نبض تدعو للضغط */}
-              {!opened && (
-                <motion.span
-                  className="absolute -inset-2.5 rounded-full border border-gold/50"
-                  animate={{ scale: [1, 1.2], opacity: [0.7, 0] }}
-                  transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
-                  aria-hidden
-                />
-              )}
-              {/* ظل تحت الزر */}
-              <span
-                className="absolute -bottom-3 left-1/2 h-3.5 w-3/4 -translate-x-1/2 rounded-[50%] bg-black/45 blur-md"
-                aria-hidden
-              />
-              <img
-                src={images.seal}
-                alt=""
-                className="relative block w-full select-none rounded-full drop-shadow-[0_16px_28px_rgba(0,0,0,0.5)]"
-                draggable={false}
-              />
-            </motion.button>
-          </div>
         </motion.div>
 
-        {/* ذرات ضوء */}
-        <Particles active={opened} />
-
-        {/* البطاقة ترتفع من الظرف */}
-        <InvitationCard show={revealed} />
-
-        {/* نجوم تتطاير لحظة ظهور البطاقة */}
-        <StarBurst fire={revealed} />
+        {/* ── الختم الشمعي على طرف اللسان — هو الزر ── */}
+        <div
+          className="absolute left-1/2 z-30"
+          style={{
+            top: `${FLAP_TIP}%`,
+            width: 'min(34vw, 188px)',
+            transform: 'translate(-50%, -50%)',
+          }}
+        >
+          <motion.button
+            type="button"
+            onClick={open}
+            disabled={opened}
+            aria-label={ui.openInvitation}
+            className={`relative block w-full rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-transparent ${
+              opened ? 'pointer-events-none' : ''
+            }`}
+            initial={false}
+            animate={
+              opened
+                ? { opacity: 0, scale: 1.3, rotate: [0, -8, 7, 0] }
+                : { opacity: 1, scale: 1, rotate: 0 }
+            }
+            whileHover={opened ? undefined : { scale: 1.07 }}
+            whileTap={opened ? undefined : { scale: 0.92 }}
+            transition={{ duration: 0.5, ease }}
+          >
+            {/* حلقة نبض تدعو للضغط */}
+            {!opened && (
+              <motion.span
+                className="absolute -inset-3 rounded-full border border-gold/50"
+                animate={{ scale: [1, 1.22], opacity: [0.7, 0] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
+                aria-hidden
+              />
+            )}
+            {/* ظل تحت الختم */}
+            <span
+              className="absolute -bottom-3 left-1/2 h-4 w-3/4 -translate-x-1/2 rounded-[50%] bg-black/45 blur-md"
+              aria-hidden
+            />
+            <img
+              src={images.seal}
+              alt=""
+              className="relative block w-full select-none rounded-full drop-shadow-[0_18px_30px_rgba(0,0,0,0.5)]"
+              draggable={false}
+            />
+          </motion.button>
+        </div>
       </motion.div>
 
-      {/* ── العنوان والتلميح (قبل الفتح) ── */}
-      <AnimatePresence>
-        {!opened && (
-          <motion.div
-            key="controls"
-            className="relative mt-10 flex flex-col items-center sm:mt-12"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.9, ease, delay: 0.2 }}
-          >
-            <h1 className="font-ruqaa text-5xl font-normal leading-snug text-ivory sm:text-6xl">
-              {subtitle}
-            </h1>
-            <p className="mt-4 font-latin text-[0.7rem] uppercase tracking-luxe text-champagne/60">
-              {brand.replace(/_/g, ' ')}
-            </p>
-            <motion.p
-              className="mt-7 font-body text-sm font-light text-champagne/70"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              ✦ {ui.openInvitation} ✦
-            </motion.p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* تظليل خفيف للأطراف يرتفع عند الفتح (عمق ودفء) */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-20"
+        initial={false}
+        animate={{ opacity: opened ? 0 : 1 }}
+        transition={{ duration: 1.2, ease }}
+        style={{
+          background:
+            'radial-gradient(75% 60% at 50% 48%, rgba(20,14,8,0) 45%, rgba(20,14,8,0.28) 100%)',
+        }}
+        aria-hidden
+      />
+
+      {/* ذرات ضوء */}
+      <Particles active={opened} />
+
+      {/* ── البطاقة تظهر بعد تلاشي الظرف ── */}
+      <div className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center">
+        <div className="relative">
+          <InvitationCard show={revealed} />
+          <StarBurst fire={revealed} />
+        </div>
+      </div>
 
       {/* ── سهم التمرير بعد الفتح ── */}
       <AnimatePresence>
@@ -331,7 +281,7 @@ export function Envelope() {
           <motion.a
             key="scrollcue"
             href="#countdown"
-            className="absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-taupe dark:text-champagne/60"
+            className="absolute bottom-7 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center gap-2 text-taupe dark:text-champagne/60"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease, delay: 0.6 }}

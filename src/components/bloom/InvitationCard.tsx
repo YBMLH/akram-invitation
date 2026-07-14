@@ -39,21 +39,8 @@ export function InvitationCard({ show }: InvitationCardProps) {
         animate={show ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 60, scale: 0.94 }}
         transition={{ duration: 1.1, ease, delay: show ? 0.15 : 0 }}
         className="relative overflow-hidden rounded-[18px] px-8 py-11 text-center shadow-[0_50px_110px_-40px_rgba(40,6,18,0.85)] sm:px-10 sm:py-12"
-        style={{
-          background:
-            'radial-gradient(120% 80% at 50% -8%, #6d1a33 0%, #55142690 34%, #4a0f22 62%, #380a19 100%)',
-        }}
+        style={{ background: '#551327' }}
       >
-        {/* لمعة ضوء علوية */}
-        <div
-          className="pointer-events-none absolute inset-x-0 top-0 h-1/2"
-          style={{
-            background:
-              'radial-gradient(60% 100% at 50% 0%, rgba(246,226,176,0.16) 0%, transparent 70%)',
-          }}
-          aria-hidden
-        />
-
         {/* الإطار الذهبي المزدوج */}
         <div
           className="pointer-events-none absolute inset-[10px] rounded-[12px] border"

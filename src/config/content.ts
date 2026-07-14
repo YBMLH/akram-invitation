@@ -142,8 +142,8 @@ export const siteContent: SiteContent = {
 
   location: {
     label: 'قالمة، الجزائر',
-    mapEmbedSrc: 'https://www.google.com/maps?q=Belkheir,Guelma,Algeria&z=14&output=embed',
-    mapsLink: 'https://maps.app.goo.gl/V4NvtvSHL8feE6kC7',
+    mapEmbedSrc: 'https://www.google.com/maps?q=Guelma,Algeria&z=14&output=embed',
+    mapsLink: 'https://maps.app.goo.gl/jio47oKPd3gaJcCe8',
   },
 
   social: {

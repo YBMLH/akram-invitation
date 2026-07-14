@@ -123,8 +123,8 @@ export const siteContent: SiteContent = {
   subtitle: 'الافتتاح الكبير',
 
   event: {
-    // ── السبت ١٨ جويلية ٢٠٢٦ — السادسة مساءً ──
-    dateISO: '2026-07-18T18:00:00',
+    // ── السبت ١٨ جويلية ٢٠٢٦ — الخامسة مساءً ──
+    dateISO: '2026-07-18T17:00:00',
   },
 
   invitation: {
@@ -135,7 +135,7 @@ export const siteContent: SiteContent = {
     subtitle: 'للقفاطين والأزياء الراقية',
     dateLabel: '18 جويلية 2026',
     dayLabel: 'السبت',
-    timeLabel: 'السادسة مساءً',
+    timeLabel: 'الخامسة مساءً',
     locationLabel: 'قالمة، الجزائر',
     closing: 'حضوركم يسعدنا ويشرّفنا',
   },

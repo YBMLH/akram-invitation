@@ -41,8 +41,16 @@ export interface SiteContent {
     mapsLink: string
   }
   social: {
-    instagram: { handle: string; url: string }
-    whatsapp: { label: string; url: string }
+    instagram: {
+      handle: string
+      url: string
+      name: string
+      posts: string
+      followers: string
+      following: string
+      bio: string
+    }
+    whatsapp: { label: string; url: string; number: string }
   }
   welcome: {
     title: string
@@ -82,6 +90,9 @@ export interface SiteContent {
       whatsapp: string
       follow: string
       message: string
+      posts: string
+      followers: string
+      following: string
     }
     footerNote: string
   }
@@ -109,19 +120,25 @@ export const siteContent: SiteContent = {
 
   location: {
     label: 'قالمة، الجزائر',
-    mapEmbedSrc: 'https://www.google.com/maps?q=Guelma,Algeria&z=13&output=embed',
-    mapsLink: 'https://www.google.com/maps/search/?api=1&query=Guelma%2C+Algeria',
+    mapEmbedSrc: 'https://www.google.com/maps?q=Belkheir,Guelma,Algeria&z=14&output=embed',
+    mapsLink: 'https://maps.app.goo.gl/V4NvtvSHL8feE6kC7',
   },
 
   social: {
     instagram: {
       handle: '@style_by_ib',
       url: 'https://instagram.com/style_by_ib',
+      name: 'Style_by_ib',
+      posts: '411',
+      followers: '98.7K',
+      following: '10',
+      bio: 'قالمة · بلخير — بوتيك القفاطين والأناقة',
     },
     whatsapp: {
       // ── ضعوا رقم واتساب البوتيك بالصيغة الدولية بدون + ──
       label: 'تحدثوا معنا',
       url: 'https://wa.me/213676779040',
+      number: '0676 77 90 40',
     },
   },
 
@@ -166,8 +183,11 @@ export const siteContent: SiteContent = {
       title: 'تواصلوا معنا',
       instagram: 'إنستغرام',
       whatsapp: 'واتساب',
-      follow: 'تابعونا',
-      message: 'راسلونا',
+      follow: 'زيارة الصفحة',
+      message: 'راسلونا على واتساب',
+      posts: 'منشور',
+      followers: 'متابع',
+      following: 'يتابع',
     },
     sealNote: 'هذه الدعوة خاصة بكم',
     footerNote: 'الافتتاح الكبير — بكل حب وأناقة',

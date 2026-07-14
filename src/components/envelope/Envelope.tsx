@@ -47,7 +47,7 @@ export function Envelope() {
     if (phase !== 'idle') return
     setTheme('light')
     setPhase('opening')
-    window.setTimeout(() => setPhase('revealed'), 1300)
+    window.setTimeout(() => setPhase('revealed'), 1250)
   }
 
   // صندوق يغطّي الشاشة مع الحفاظ على نسبة صورة الظرف
@@ -88,15 +88,15 @@ export function Envelope() {
         onPointerMove={handleTilt}
         onPointerLeave={resetTilt}
       >
-        {/* جسم الظرف — يختفي بسرعة بعد ابتداء انزلاق اللسان */}
+        {/* جسم الظرف — النصف السفلي ينزلق للأسفل */}
         <motion.img
           src={images.envelopeBody}
           alt=""
           className="absolute inset-0 h-full w-full select-none object-fill"
           draggable={false}
           initial={false}
-          animate={{ opacity: opened ? 0 : 1 }}
-          transition={{ duration: 0.28, ease, delay: opened ? 0.95 : 0 }}
+          animate={{ y: opened ? '116%' : '0%' }}
+          transition={{ duration: 1.25, ease: [0.5, 0, 0.5, 1], delay: opened ? 0.15 : 0 }}
         />
 
         {/* ── مجموعة اللسان + الختم — تنزلق للأعلى ── */}

@@ -29,10 +29,24 @@ export interface SiteContent {
     dateISO: string
   }
   invitation: {
-    eyebrow: string
-    script: string
-    paragraphs: string[]
+    /** العنوان الكبير — «دعوة» */
+    headline: string
+    /** سطر ترحيب قصير */
+    welcome: string
+    /** نص بديل لشعار الخط العربي */
+    brandArabic: string
+    /** سطر الدعوة الرسمي */
+    intro: string
+    /** وصف قصير — للقفاطين والأزياء الراقية */
+    subtitle: string
+    /** التاريخ — ١٨ جويلية */
+    dateLabel: string
+    /** اليوم — السبت */
+    dayLabel: string
+    /** الوقت */
+    timeLabel: string
     locationLabel: string
+    /** سطر الختام */
     closing: string
   }
   location: {
@@ -65,6 +79,8 @@ export interface SiteContent {
     /** الختم الشمعي — زر فتح الظرف */
     seal: string
     logo: string
+    /** شعار الدار بالخط العربي الذهبي (شفاف) */
+    brandLogo: string
     /** خلفية قسم العدّ التنازلي */
     countdownBg: string
   }
@@ -110,14 +126,16 @@ export const siteContent: SiteContent = {
   },
 
   invitation: {
-    eyebrow: 'من دار',
-    script: 'الافتتاح الكبير',
-    paragraphs: [
-      'يشرّفنا دعوتكم لحضور حفل الافتتاح الكبير لدار Style By IB.',
-      'اكتشفوا مجموعتنا الحصرية من القفاطين الأنيقة وشاركونا هذه المناسبة المميزة.',
-    ],
+    headline: 'دعوة',
+    welcome: 'حضوركم يُضفي على افتتاحنا رونقاً خاصاً',
+    brandArabic: 'ستايل باي إيب',
+    intro: 'نتشرّف بدعوتكم لحضور الافتتاح الرسمي',
+    subtitle: 'للقفاطين والأزياء الراقية',
+    dateLabel: '18 جويلية 2026',
+    dayLabel: 'السبت',
+    timeLabel: 'التاسعة صباحاً',
     locationLabel: 'قالمة، الجزائر',
-    closing: 'نتطلع لاستقبالكم ومشاركتكم هذه اللحظة التي لا تُنسى.',
+    closing: 'حضوركم يسعدنا ويشرّفنا',
   },
 
   location: {
@@ -158,6 +176,7 @@ export const siteContent: SiteContent = {
     envelopeFlap: asset('/assets/envelope-flap.webp'),
     seal: asset('/assets/seal.webp'),
     logo: asset('/assets/logo.webp'),
+    brandLogo: asset('/assets/brand-ar.webp'),
     countdownBg: asset('/assets/countdown-bg.webp'),
   },
 

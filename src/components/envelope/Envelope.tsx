@@ -11,11 +11,11 @@ type Phase = 'idle' | 'opening' | 'revealed'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
-/** موضع طرف اللسان في صورة الظرف (نسبة) — حيث يُوضع الختم */
-const TIP_X = 50.5
-const TIP_Y = 57.3
-/** أبعاد صورة الظرف الأصلية */
-const IMG_RATIO = 768 / 1388 // العرض/الارتفاع
+/** موضع طرف اللسان في الصورة (نسبة) — حيث يوضع الختم */
+const TIP_X = 50
+const TIP_Y = 55.4
+/** أبعاد صور الظرف الأصلية */
+const IMG_RATIO = 768 / 1388
 
 export function Envelope() {
   const [phase, setPhase] = useState<Phase>('idle')
@@ -47,7 +47,7 @@ export function Envelope() {
     if (phase !== 'idle') return
     setTheme('light')
     setPhase('opening')
-    window.setTimeout(() => setPhase('revealed'), 1400)
+    window.setTimeout(() => setPhase('revealed'), 1200)
   }
 
   // صندوق يغطّي الشاشة مع الحفاظ على نسبة صورة الظرف
@@ -74,7 +74,7 @@ export function Envelope() {
         aria-hidden
       />
 
-      {/* ── مسرح الظرف (صورة حقيقية مقصوصة إلى جسم + لسان) ── */}
+      {/* ── مسرح الظرف (صورتان نظيفتان: جسم + لسان) ── */}
       <motion.div
         className="absolute left-1/2 top-1/2 z-10"
         style={{
@@ -84,107 +84,84 @@ export function Envelope() {
           rotateX,
           rotateY,
           transformPerspective: 1600,
-          transformStyle: 'preserve-3d',
         }}
         onPointerMove={handleTilt}
         onPointerLeave={resetTilt}
-        initial={false}
-        animate={{ opacity: revealed ? 0 : 1 }}
-        transition={{ duration: 0.7, ease }}
       >
-        {/* جسم الظرف (مع الداخل المعتم) */}
-        <img
+        {/* جسم الظرف — يتلاشى بعد انزلاق اللسان */}
+        <motion.img
           src={images.envelopeBody}
           alt=""
           className="absolute inset-0 h-full w-full select-none object-fill"
           draggable={false}
+          initial={false}
+          animate={{ opacity: revealed ? 0 : 1 }}
+          transition={{ duration: 0.6, ease, delay: revealed ? 0 : 0 }}
         />
 
-        {/* السطر التمهيدي على اللسان */}
-        <motion.p
-          className="absolute inset-x-0 top-[9%] z-[15] text-center font-body text-sm font-light tracking-wide text-[#4a3a28] sm:text-base"
-          initial={false}
-          animate={{ opacity: opened ? 0 : 0.85 }}
-          transition={{ duration: 0.5, ease }}
-        >
-          {ui.invitedEyebrow}
-        </motion.p>
-
-        {/* ── اللسان العلوي — قطعة منفصلة تُفتح ── */}
+        {/* ── مجموعة اللسان + الختم — تنزلق للأعلى ── */}
         <motion.div
           className="absolute inset-0 z-20"
-          style={{ transformOrigin: 'top center', transformStyle: 'preserve-3d' }}
           initial={false}
-          animate={{ rotateX: opened ? -172 : 0 }}
-          transition={{ duration: 0.95, ease, delay: opened ? 0.2 : 0 }}
+          animate={{ y: opened ? '-116%' : '0%' }}
+          transition={{ duration: 0.9, ease, delay: opened ? 0.1 : 0 }}
         >
-          {/* الوجه الخارجي */}
+          {/* اللسان */}
           <img
             src={images.envelopeFlap}
             alt=""
-            className="absolute inset-0 h-full w-full select-none object-fill [backface-visibility:hidden]"
-            style={{ filter: opened ? 'brightness(0.97)' : 'none' }}
+            className="absolute inset-0 h-full w-full select-none object-fill"
             draggable={false}
           />
-          {/* الوجه الداخلي (أغمق قليلاً) */}
-          <img
-            src={images.envelopeFlap}
-            alt=""
-            className="absolute inset-0 h-full w-full select-none object-fill [backface-visibility:hidden]"
-            style={{ transform: 'rotateX(180deg)', filter: 'brightness(0.72) contrast(1.02)' }}
-            draggable={false}
-            aria-hidden
-          />
-        </motion.div>
 
-        {/* ── الختم الشمعي على طرف اللسان — الزر ── */}
-        <div
-          className="absolute z-30"
-          style={{
-            left: `${TIP_X}%`,
-            top: `${TIP_Y}%`,
-            width: 'min(26vw, 150px)',
-            transform: 'translate(-50%, -50%)',
-          }}
-        >
-          <motion.button
-            type="button"
-            onClick={open}
-            disabled={opened}
-            aria-label={ui.openInvitation}
-            className={`relative block w-full rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-transparent ${
-              opened ? 'pointer-events-none' : ''
-            }`}
-            initial={false}
-            animate={
-              opened
-                ? { opacity: 0, scale: 1.3, rotate: [0, -8, 7, 0] }
-                : { opacity: 1, scale: 1, rotate: 0 }
-            }
-            whileHover={opened ? undefined : { scale: 1.07 }}
-            whileTap={opened ? undefined : { scale: 0.92 }}
-            transition={{ duration: 0.5, ease }}
+          {/* السطر التمهيدي على اللسان */}
+          <p className="absolute inset-x-0 top-[11%] text-center font-body text-sm font-light tracking-wide text-[#4a3a28]/70 sm:text-base">
+            {ui.invitedEyebrow}
+          </p>
+
+          {/* الختم — الزر */}
+          <div
+            className="absolute z-30"
+            style={{
+              left: `${TIP_X}%`,
+              top: `${TIP_Y}%`,
+              width: 'min(26vw, 150px)',
+              transform: 'translate(-50%, -50%)',
+            }}
           >
-            {!opened && (
-              <motion.span
-                className="absolute -inset-3 rounded-full border border-[#5a4632]/40"
-                animate={{ scale: [1, 1.22], opacity: [0.6, 0] }}
-                transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
+            <motion.button
+              type="button"
+              onClick={open}
+              disabled={opened}
+              aria-label={ui.openInvitation}
+              className={`relative block w-full rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-4 focus-visible:ring-offset-transparent ${
+                opened ? 'pointer-events-none' : ''
+              }`}
+              whileHover={opened ? undefined : { scale: 1.07 }}
+              whileTap={opened ? undefined : { scale: 0.92 }}
+              transition={{ duration: 0.3, ease }}
+            >
+              {!opened && (
+                <motion.span
+                  className="absolute -inset-3 rounded-full border border-[#5a4632]/40"
+                  animate={{ scale: [1, 1.22], opacity: [0.6, 0] }}
+                  transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut' }}
+                  aria-hidden
+                />
+              )}
+              <span
+                className="absolute -bottom-3 left-1/2 h-4 w-3/4 -translate-x-1/2 rounded-[50%] bg-black/40 blur-md"
                 aria-hidden
               />
-            )}
-            <span
-              className="absolute -bottom-3 left-1/2 h-4 w-3/4 -translate-x-1/2 rounded-[50%] bg-black/40 blur-md"
-              aria-hidden
-            />
-            <img
-              src={images.seal}
-              alt=""
-              className="relative block w-full select-none rounded-full drop-shadow-[0_18px_30px_rgba(0,0,0,0.55)]"
-              draggable={false}
-            />
-          </motion.button>
-        </div>
+              <img
+                src={images.seal}
+                alt=""
+                className="relative block w-full select-none rounded-full drop-shadow-[0_18px_30px_rgba(0,0,0,0.5)]"
+                draggable={false}
+              />
+            </motion.button>
+          </div>
+        </motion.div>
       </motion.div>
 
       {/* التلميح النابض أسفل الشاشة */}
@@ -206,7 +183,7 @@ export function Envelope() {
       {/* ذرات ضوء */}
       <Particles active={opened} />
 
-      {/* ── البطاقة تظهر بعد تلاشي الظرف ── */}
+      {/* ── البطاقة تظهر بعد اختفاء الظرف ── */}
       <div className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center">
         <div className="relative">
           <InvitationCard show={revealed} />

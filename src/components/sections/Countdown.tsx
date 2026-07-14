@@ -115,8 +115,32 @@ export function Countdown() {
   ]
 
   return (
-    <section id="countdown" className="px-6 py-24 sm:py-28">
-      <div className="mx-auto max-w-3xl">
+    // شريط سينمائي داكن دائماً (نسق داكن مفروض) ليبرز نصّ شامبانياً أنيقاً فوق الصورة
+    <section
+      id="countdown"
+      className="dark relative overflow-hidden px-6 py-24 sm:py-28"
+    >
+      {/* صورة عارضات الأزياء — خلفية القسم */}
+      <img
+        src={siteContent.images.countdownBg}
+        alt=""
+        aria-hidden
+        loading="lazy"
+        className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-center"
+      />
+
+      {/* حجاب داكن يعتّم الحواف ويترك الصورة تظهر في الوسط مع بقاء الأرقام واضحة */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,#171310_0%,rgba(23,19,16,0.74)_20%,rgba(23,19,16,0.5)_50%,rgba(23,19,16,0.74)_80%,#171310_100%)]"
+        aria-hidden
+      />
+      {/* تظليل جانبي خفيف لعمق سينمائي */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_100%_at_50%_50%,transparent_38%,rgba(15,12,9,0.55)_100%)]"
+        aria-hidden
+      />
+
+      <div className="relative z-10 mx-auto max-w-3xl">
         <SectionHeading eyebrow={ui.countdown.eyebrow} title={ui.countdown.title} />
 
         {isComplete ? (

@@ -65,6 +65,8 @@ export interface SiteContent {
     /** الختم الشمعي — زر فتح الظرف */
     seal: string
     logo: string
+    /** خلفية قسم العدّ التنازلي */
+    countdownBg: string
   }
   /** نصوص الواجهة (أزرار، عناوين، شريط متحرك…) */
   ui: {
@@ -156,6 +158,7 @@ export const siteContent: SiteContent = {
     envelopeFlap: asset('/assets/envelope-flap.webp'),
     seal: asset('/assets/seal.webp'),
     logo: asset('/assets/logo.webp'),
+    countdownBg: asset('/assets/countdown-bg.webp'),
   },
 
   ui: {

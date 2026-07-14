@@ -3,7 +3,6 @@ import { useState } from 'react'
 import type { PointerEvent } from 'react'
 import { siteContent } from '../../config/content'
 import { Particles } from '../bloom/Particles'
-import { InvitationCard } from '../bloom/InvitationCard'
 import { StarBurst } from '../bloom/StarBurst'
 import { useThemeCtx } from '../../context/theme'
 
@@ -183,12 +182,29 @@ export function Envelope() {
       {/* ذرات ضوء */}
       <Particles active={opened} />
 
-      {/* ── البطاقة تظهر بعد اختفاء الظرف ── */}
+      {/* ── الدعوة الكاملة (المخمل + البطاقة) تملأ القسم بعد اختفاء الظرف ── */}
+      <motion.div
+        className="pointer-events-none absolute inset-0 z-40"
+        initial={false}
+        animate={{ opacity: revealed ? 1 : 0 }}
+        transition={{ duration: 0.9, ease, delay: revealed ? 0.15 : 0 }}
+        style={{ backgroundColor: '#370c14' }}
+        aria-hidden={!revealed}
+      >
+        <motion.img
+          src={images.invitationCard}
+          alt="دعوة — ستايل باي إيب"
+          className="absolute inset-0 h-full w-full select-none object-contain"
+          draggable={false}
+          initial={false}
+          animate={{ scale: revealed ? 1 : 1.04 }}
+          transition={{ duration: 1.2, ease, delay: revealed ? 0.15 : 0 }}
+        />
+      </motion.div>
+
+      {/* ذرات النجوم عند الظهور */}
       <div className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center">
-        <div className="relative">
-          <InvitationCard show={revealed} />
-          <StarBurst fire={revealed} />
-        </div>
+        <StarBurst fire={revealed} />
       </div>
 
       {/* ── سهم التمرير بعد الفتح ── */}

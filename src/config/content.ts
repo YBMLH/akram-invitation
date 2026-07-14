@@ -81,6 +81,8 @@ export interface SiteContent {
     logo: string
     /** شعار الدار بالخط العربي الذهبي (شفاف) */
     brandLogo: string
+    /** بطاقة الدعوة الكاملة على خلفية المخمل — تظهر عند فتح الظرف */
+    invitationCard: string
     /** خلفية قسم العدّ التنازلي */
     countdownBg: string
   }
@@ -177,6 +179,7 @@ export const siteContent: SiteContent = {
     seal: asset('/assets/seal.webp'),
     logo: asset('/assets/logo.webp'),
     brandLogo: asset('/assets/brand-ar.webp'),
+    invitationCard: asset('/assets/invitation-card.webp'),
     countdownBg: asset('/assets/countdown-bg.webp'),
   },
 

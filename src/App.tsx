@@ -33,6 +33,7 @@ export default function App() {
         siteContent.images.envelopeBody,
         siteContent.images.envelopeFlap,
         siteContent.images.seal,
+        siteContent.images.invitationCard,
       ].map(preloadImage),
     )
     const cap = new Promise((r) => setTimeout(r, 6000))
